@@ -15,7 +15,7 @@ public class OrderService : IOrderService
         _beanRepository = beanRepository;
     }
 
-    public async Task<Order> PlaceOrderAsync(OrderDto dto, string userId)
+    public async Task<Order> CreateOrderAsync(OrderDto dto, string userId)
     {
         // 1. Validation: Ensure Quantity is valid
         if (dto.Quantity <= 0)

@@ -11,5 +11,5 @@ public interface IOrderService
     /// <param name="dto">The order details (BeanId, Quantity)</param>
     /// <param name="userId">The ID of the authenticated user</param>
     /// <returns>The created Order entity</returns>
-    Task<Order> PlaceOrderAsync(OrderDto dto, string userId);
+    Task<Order> CreateOrderAsync(OrderDto dto, string userId);
 }
