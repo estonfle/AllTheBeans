@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AllTheBeans.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("orders")]
 [ApiController]
 [Authorize]
 public class OrdersController : ControllerBase
@@ -18,17 +18,14 @@ public class OrdersController : ControllerBase
         _orderService = orderService;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateOrder([FromBody] OrderDto dto)
-    {
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
+{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        
-        if (string.IsNullOrEmpty(userId)) 
-            return Unauthorized("User ID claim not found.");
+    var order = await _orderService.CreateOrderAsync(dto, userId);
 
-        var order = await _orderService.CreateOrderAsync(dto, userId);
-
-        return Ok(new { Message = "Order created successfully", OrderId = order.Id });
-    }
+    return Ok(new { Message = "Order placed successfully", OrderId = order.Id, ItemCount = order.Items.Count });
+}
 }

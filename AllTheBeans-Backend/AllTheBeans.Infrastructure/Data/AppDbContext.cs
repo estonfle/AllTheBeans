@@ -11,4 +11,5 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<CoffeeBean> CoffeeBeans { get; set; }
     public DbSet<BeanOfTheDay> BeanOfTheDays { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 }

@@ -1,6 +1,7 @@
 using AllTheBeans.Domain.Entities;
 using AllTheBeans.Domain.Interfaces;
 using AllTheBeans.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AllTheBeans.Infrastructure.Repositories;
 
@@ -12,6 +13,14 @@ public class OrderRepository : IOrderRepository
     {
         _context = context;
     }
+
+    public async Task<Order?> GetByIdAsync(int id)
+{
+    return await _context.Orders
+        .Include(o => o.Items)
+        .ThenInclude(i => i.CoffeeBean) 
+        .FirstOrDefaultAsync(o => o.Id == id);
+}
 
     public async Task AddAsync(Order order)
     {

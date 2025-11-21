@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AllTheBeans.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("beans")]
 [ApiController]
 public class BeansController : ControllerBase
 {

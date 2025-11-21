@@ -15,33 +15,35 @@ public class OrderService : IOrderService
         _beanRepository = beanRepository;
     }
 
-    public async Task<Order> CreateOrderAsync(OrderDto dto, string userId)
+    public async Task<Order> CreateOrderAsync(CreateOrderDto dto, string userId)
     {
-        // 1. Validation: Ensure Quantity is valid
-        if (dto.Quantity <= 0)
-        {
-            throw new ArgumentException("Quantity must be at least 1.");
-        }
-
-        // 2. Validation: Ensure the Bean actually exists
-        var bean = await _beanRepository.GetByIdAsync(dto.BeanId);
-        if (bean == null)
-        {
-            throw new KeyNotFoundException($"Coffee Bean with ID {dto.BeanId} not found.");
-        }
-
-        // 3. Business Logic: Create the Order Entity
-        // Note: In a more complex system, we might calculate total cost here 
-        // or snapshot the price, but per requirements, we store the basic details.
         var order = new Order
         {
             UserId = userId,
-            CoffeeBeanId = dto.BeanId,
-            Quantity = dto.Quantity,
-            OrderDate = DateTime.UtcNow
+            OrderDate = DateTime.UtcNow,
+            Items = new List<OrderItem>()
         };
 
-        // 4. Persistence
+        // Loop through incoming items
+        foreach (var itemDto in dto.Items)
+        {
+            // Validate Bean Existence
+            var bean = await _beanRepository.GetByIdAsync(itemDto.BeanId);
+            if (bean == null)
+            {
+                throw new KeyNotFoundException($"Bean with ID {itemDto.BeanId} not found.");
+            }
+
+            // Create OrderItem (Database snapshot)
+            order.Items.Add(new OrderItem
+            {
+                CoffeeBeanId = bean.Id,
+                Quantity = itemDto.Quantity,
+                UnitPrice = bean.Cost // Snapshotting the price
+            });
+        }
+
+        // Save the Parent (EF Core automatically saves the Children in the list)
         await _orderRepository.AddAsync(order);
 
         return order;

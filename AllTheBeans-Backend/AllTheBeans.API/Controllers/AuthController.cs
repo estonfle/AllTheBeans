@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AllTheBeans.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("auth")]
 [ApiController]
 public class AuthController : ControllerBase
 {
