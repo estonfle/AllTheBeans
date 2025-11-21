@@ -3,6 +3,7 @@ using AllTheBeans.Domain.Entities;
 using AllTheBeans.Domain.Interfaces;
 using AllTheBeans.Infrastructure.Data;
 using AllTheBeans.Infrastructure.Repositories;
+using AllTheBeans.API.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,9 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IBeanService, BeanService>();
 builder.Services.AddScoped<IOrderService, OrderService>(); 
 builder.Services.AddScoped<IAuthService, AuthService>(); 
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddAuthentication(options =>
 {
