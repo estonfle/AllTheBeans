@@ -1,0 +1,104 @@
+###########################
+# .NET / VISUAL STUDIO
+###########################
+
+## Build and Output
+# Ignore all bin and obj folders in any directory
+[Bb]in/
+[Oo]bj/
+# Ignore generated files like *.orig, *.bak
+*.orig
+*.bak
+
+## Temporary and User-Specific Files
+# Visual Studio Temporary files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code and IDE files
+# Ignore VS Code settings/workspace files (unless you want to share specific settings)
+.vscode/
+# JetBrains Rider/dotCover/ReSharper
+.idea/
+*.ReSharperManagedBuildServer
+.vs/ # Ignore the .vs folder, which is the local repository for Visual Studio files
+
+# Logs and Documentation Generation
+[Ll]ogs/
+*.log
+*.sqlite
+*.mdb
+*.sass-cache/
+*.[Ss]ource[Nn]ame.txt
+
+# NuGet package restore
+# Ignore local NuGet packages folder (if outside of the solution structure)
+**/packages/*
+# except if the packages directory is used for a solution-local package source
+!**/packages/build/
+
+# Do not ignore files used in deployment or tooling
+!/tools/
+
+# Test results
+# Default TestResults folder
+TestResults/
+# NUnit/xUnit test artifacts
+*.trx
+*.testsettings
+
+# Application secrets
+# The user secrets directory and file
+[Uu]ser[Ss]ecrets/
+
+# Environment files
+# Database/migration snapshots (if not tracked)
+*.db
+*.sqlite-journal
+
+###########################
+# REACT / NODE.JS
+###########################
+
+# Dependencies
+# Node.js modules are usually huge and should be ignored
+node_modules
+/node_modules
+
+# Build/Dist folders (from the React part)
+# This will be in your React project folder, often called 'ClientApp' or 'frontend'
+/build
+/dist
+/out
+/package
+
+# Dependency cache files
+.npm
+.eslintcache
+.yarn-integrity
+.pnp
+.pnp.js
+
+# Logs and error reports
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.nuxt
+.vuepress/dist
+.serverless
+
+# Environment Variables (SENSITIVE)
+# ALWAYS ignore local environment configuration files that contain secrets/API keys.
+.env
+.env.local
+.env.*.local
+!/ClientApp/.env.example # Keep an example file, but ignore all actual .env files
+
+# Coverage (if running tests)
+/coverage
+
+# Operating System Files
+.DS_Store
+Thumbs.db
