@@ -31,7 +31,7 @@ public class OrdersController : ControllerBase
 
     // POST: api/orders (Create)
     [HttpPost]
-    public async Task<IActionResult> PlaceOrder([FromBody] CreateOrderDto dto)
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
