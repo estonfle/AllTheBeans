@@ -56,6 +56,8 @@ TestResults/
 # Environment files
 # Database/migration snapshots (if not tracked)
 *.db
+*.db-shm
+*.db-wal
 *.sqlite-journal
 
 ###########################
