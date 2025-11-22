@@ -20,32 +20,83 @@ public class OrderService : IOrderService
         var order = new Order
         {
             UserId = userId,
-            OrderDate = DateTime.UtcNow,
             Items = new List<OrderItem>()
         };
 
-        // Loop through incoming items
         foreach (var itemDto in dto.Items)
         {
-            // Validate Bean Existence
             var bean = await _beanRepository.GetByIdAsync(itemDto.BeanId);
             if (bean == null)
             {
                 throw new KeyNotFoundException($"Bean with ID {itemDto.BeanId} not found.");
             }
 
-            // Create OrderItem (Database snapshot)
             order.Items.Add(new OrderItem
             {
                 CoffeeBeanId = bean.Id,
                 Quantity = itemDto.Quantity,
-                UnitPrice = bean.Cost // Snapshotting the price
+                UnitPrice = bean.Cost 
             });
         }
 
-        // Save the Parent (EF Core automatically saves the Children in the list)
         await _orderRepository.AddAsync(order);
 
         return order;
+    }
+
+    public async Task<IEnumerable<OrderResponseDto>> GetUserOrdersAsync(string userId)
+    {
+        var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
+
+        // Map Entity -> Response DTO
+        return orders.Select(o => new OrderResponseDto(
+            o.Id,
+            o.OrderDate,
+            o.Items.Sum(i => i.Quantity * i.UnitPrice), // Calculate Total
+            o.Items.Select(i => new OrderItemResponseDto(
+                i.CoffeeBeanId,
+                i.CoffeeBean.Name,
+                i.CoffeeBean.Image,
+                i.Quantity,
+                i.UnitPrice
+            )).ToList()
+        ));
+    }
+
+    public async Task UpdateOrderAsync(int orderId, UpdateOrderDto dto, string userId)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId);
+
+        if (order == null) throw new KeyNotFoundException($"Order {orderId} not found");
+        if (order.UserId != userId) throw new UnauthorizedAccessException("Not authorized");
+
+        // STRATEGY: Clear existing items and re-add new ones
+        // This handles removing items, adding items, and changing quantities all at once.
+        order.Items.Clear();
+
+        foreach (var itemDto in dto.Items)
+        {
+            var bean = await _beanRepository.GetByIdAsync(itemDto.BeanId);
+            if (bean == null) throw new KeyNotFoundException($"Bean {itemDto.BeanId} not found");
+
+            order.Items.Add(new OrderItem
+            {
+                OrderId = orderId, // Link to parent
+                CoffeeBeanId = bean.Id,
+                Quantity = itemDto.Quantity,
+                UnitPrice = bean.Cost // Re-snapshot price
+            });
+        }
+
+        await _orderRepository.UpdateAsync(order);
+    }
+
+    public async Task CancelOrderAsync(int orderId, string userId)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId);
+        if (order == null) throw new KeyNotFoundException($"Order {orderId} not found");
+        if (order.UserId != userId) throw new UnauthorizedAccessException("Not authorized");
+
+        await _orderRepository.DeleteAsync(order);
     }
 }

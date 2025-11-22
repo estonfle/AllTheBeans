@@ -12,4 +12,7 @@ public interface IOrderService
     /// <param name="userId">The ID of the authenticated user</param>
     /// <returns>The created Order entity</returns>
     Task<Order> CreateOrderAsync(CreateOrderDto dto, string userId);
+    Task UpdateOrderAsync(int orderId, UpdateOrderDto dto, string userId);
+    Task CancelOrderAsync(int orderId, string userId);
+    Task<IEnumerable<OrderResponseDto>> GetUserOrdersAsync(string userId);
 }

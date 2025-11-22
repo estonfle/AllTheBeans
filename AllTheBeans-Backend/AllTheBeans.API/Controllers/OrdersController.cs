@@ -18,14 +18,47 @@ public class OrdersController : ControllerBase
         _orderService = orderService;
     }
 
-    [HttpPost("create")]
-    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
-{
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    if (string.IsNullOrEmpty(userId)) return Unauthorized();
+    // GET: api/orders (History)
+    [HttpGet]
+    public async Task<IActionResult> GetMyOrders()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-    var order = await _orderService.CreateOrderAsync(dto, userId);
+        var orders = await _orderService.GetUserOrdersAsync(userId);
+        return Ok(orders);
+    }
 
-    return Ok(new { Message = "Order placed successfully", OrderId = order.Id, ItemCount = order.Items.Count });
-}
+    // POST: api/orders (Create)
+    [HttpPost]
+    public async Task<IActionResult> PlaceOrder([FromBody] CreateOrderDto dto)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        var order = await _orderService.CreateOrderAsync(dto, userId);
+        return Ok(new { Message = "Order placed", OrderId = order.Id });
+    }
+
+    // PUT: api/orders/5 (Modify)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateOrder(int id, [FromBody] UpdateOrderDto dto)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        await _orderService.UpdateOrderAsync(id, dto, userId);
+        return Ok(new { Message = "Order updated successfully" });
+    }
+
+    // DELETE: api/orders/5 (Cancel)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> CancelOrder(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        await _orderService.CancelOrderAsync(id, userId);
+        return Ok(new { Message = "Order cancelled successfully" });
+    }
 }

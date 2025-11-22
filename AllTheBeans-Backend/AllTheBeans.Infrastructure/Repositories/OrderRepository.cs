@@ -14,20 +14,40 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public async Task<Order?> GetByIdAsync(int id)
-{
-    return await _context.Orders
-        .Include(o => o.Items)
-        .ThenInclude(i => i.CoffeeBean) 
-        .FirstOrDefaultAsync(o => o.Id == id);
-}
-
     public async Task AddAsync(Order order)
     {
-        // Add the entity to the DbSet
         await _context.Orders.AddAsync(order);
         
-        // Commit changes to the database
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Order?> GetByIdAsync(int id)
+    {
+        return await _context.Orders
+            .Include(o => o.Items)
+            .ThenInclude(i => i.CoffeeBean)
+            .FirstOrDefaultAsync(o => o.Id == id);
+    }
+
+    public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId)
+    {
+        return await _context.Orders
+            .Where(o => o.UserId == userId)
+            .Include(o => o.Items)
+            .ThenInclude(i => i.CoffeeBean)
+            .OrderByDescending(o => o.OrderDate) // Newest first
+            .ToListAsync();
+    }
+
+    public async Task UpdateAsync(Order order)
+    {
+        _context.Orders.Update(order);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(Order order)
+    {
+        _context.Orders.Remove(order);
         await _context.SaveChangesAsync();
     }
 }
