@@ -40,7 +40,7 @@ export default function HomePage() {
 
         searchTimeout.current = setTimeout(() => {
             beansApi.getAll(val).then(setBeans);
-        }, 2000);
+        }, 500);
     };
 
     if (loading) return <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 5 }} />;
