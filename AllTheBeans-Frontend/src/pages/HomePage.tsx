@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Grid, Box, Typography, CircularProgress } from '@mui/material';
+import { useEffect, useState, useRef } from 'react'; // <--- 1. Import useRef
+import { Grid, TextField, Box, Typography, CircularProgress } from '@mui/material';
 import type { CoffeeBean } from '../types';
 import { beansApi } from '../api/beans';
 import BeanCard from '../components/BeanCard';
@@ -7,10 +7,12 @@ import BeanCard from '../components/BeanCard';
 export default function HomePage() {
     const [beans, setBeans] = useState<CoffeeBean[]>([]);
     const [botd, setBotd] = useState<CoffeeBean | null>(null);
+    const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
-
-    // Popup State
     const [selectedBean, setSelectedBean] = useState<CoffeeBean | null>(null);
+
+    // 2. Create a Ref to store the timer ID between renders
+    const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,6 +30,19 @@ export default function HomePage() {
         fetchData();
     }, []);
 
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        setSearch(val);
+
+        if (searchTimeout.current) {
+            clearTimeout(searchTimeout.current);
+        }
+
+        searchTimeout.current = setTimeout(() => {
+            beansApi.getAll(val).then(setBeans);
+        }, 2000);
+    };
+
     if (loading) return <CircularProgress sx={{ display: 'block', mx: 'auto', mt: 5 }} />;
 
     return (
@@ -42,6 +57,11 @@ export default function HomePage() {
                     </Box>
                 )}
             </Box>
+
+            <TextField
+                fullWidth label="Search beans..." variant="outlined"
+                value={search} onChange={handleSearch} sx={{ mb: 4 }}
+            />
 
             <Grid container spacing={3}>
                 {beans.map(bean => (
