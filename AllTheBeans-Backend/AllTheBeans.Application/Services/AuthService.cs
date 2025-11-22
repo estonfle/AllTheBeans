@@ -40,7 +40,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDto?> LoginAsync(LoginDto dto)
     {
-        var user = await _userManager.FindByNameAsync(dto.Username);
+        var user = await _userManager.FindByEmailAsync(dto.Email);
 
         if (user == null) return null;
 
@@ -50,7 +50,7 @@ public class AuthService : IAuthService
 
         var token = GenerateJwtToken(user);
         
-        return new AuthResponseDto(token, user.UserName!);
+        return new AuthResponseDto(token, user.UserName!, user.Email!);
     }
 
     private string GenerateJwtToken(User user)
