@@ -3,11 +3,13 @@ import { Container, TextField, Button, Typography, Paper, Box, Link } from '@mui
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { authApi } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useAuth();
+    const { showNotification } = useNotification();
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -15,6 +17,7 @@ export default function LoginPage() {
         try {
             const data = await authApi.login({ email, password });
             login(data.token, data.email);
+            showNotification("Welcome back!", "success");
             navigate('/');
         } catch (err) { /* Handled globally */ }
     };

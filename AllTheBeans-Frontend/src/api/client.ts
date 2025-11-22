@@ -24,8 +24,8 @@ API.interceptors.response.use(
         let message = "An unexpected error occurred.";
 
         if (error.response) {
-            const data = error.response.data;
-            message = data.detail || data.title || message;
+            const data = error.response.data[0];
+            message = data.description || data.code;
 
             if (data.errors) {
                 const validationMessages = Object.values(data.errors).flat().join(' ');
