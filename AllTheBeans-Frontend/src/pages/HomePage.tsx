@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from 'react'; // <--- 1. Import useRef
+import { useEffect, useState, useRef } from 'react';
 import { Grid, TextField, Box, Typography, CircularProgress } from '@mui/material';
 import type { CoffeeBean } from '../types';
 import { beansApi } from '../api/beans';
 import BeanCard from '../components/BeanCard';
+import BeanDetailDialog from '../components/BeanDetailDialog';
 
 export default function HomePage() {
     const [beans, setBeans] = useState<CoffeeBean[]>([]);
@@ -70,6 +71,12 @@ export default function HomePage() {
                     </Grid>
                 ))}
             </Grid>
+
+            <BeanDetailDialog
+                open={!!selectedBean}
+                bean={selectedBean}
+                onClose={() => setSelectedBean(null)}
+            />
         </>
     );
 }
