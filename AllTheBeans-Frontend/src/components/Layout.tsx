@@ -25,7 +25,6 @@ export default function Layout() {
                     {isAuthenticated ? (
                         <>
                             <Button color="inherit" component={RouterLink} to="/orders">My Orders</Button>
-                            <Typography sx={{ mx: 2 }}>{user?.username}</Typography>
                             <Button color="inherit" onClick={() => { logout(); navigate('/login'); }}>Logout</Button>
                         </>
                     ) : (

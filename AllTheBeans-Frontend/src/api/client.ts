@@ -24,15 +24,29 @@ API.interceptors.response.use(
         let message = "An unexpected error occurred.";
 
         if (error.response) {
-            const data = error.response.data[0];
-            message = data.description || data.code;
+            const responseData = error.response.data;
 
-            if (data.errors) {
-                const validationMessages = Object.values(data.errors).flat().join(' ');
-                message = validationMessages || message;
+
+            if (Array.isArray(responseData) && responseData.length > 0) {
+                message = responseData[0].description || responseData[0].code;
             }
 
-            if (error.response.status === 401) {
+            else if (typeof responseData === 'object') {
+
+                if (responseData.detail) {
+                    message = responseData.detail;
+                }
+
+                else if (responseData.title) {
+                    message = responseData.title;
+                }
+
+                else if (responseData.errors) {
+                    message = Object.values(responseData.errors).flat().join(' ');
+                }
+            }
+
+            if (error.response.status === 401 && message === "An unexpected error occurred.") {
                 message = "Session expired. Please login again.";
             }
         } else if (error.request) {
