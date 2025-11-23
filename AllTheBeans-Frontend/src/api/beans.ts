@@ -1,9 +1,11 @@
 import API from './client';
-import type { CoffeeBean } from '../types';
+import type { CoffeeBean, PagedResult } from '../types';
 
 export const beansApi = {
-    getAll: async (searchQuery: string = '') => {
-        const res = await API.get<CoffeeBean[]>(`/beans?search=${encodeURIComponent(searchQuery)}`);
+    getAll: async (search: string = '', page: number = 1) => {
+        const res = await API.get<PagedResult<CoffeeBean>>('/beans', {
+            params: { search, page, pageSize: 9 }
+        });
         return res.data;
     },
 

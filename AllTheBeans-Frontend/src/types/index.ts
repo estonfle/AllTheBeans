@@ -8,6 +8,13 @@ export interface CoffeeBean {
     cost: number;
 }
 
+export interface PagedResult<T> {
+    items: T[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+}
+
 // --- Auth Contracts ---
 export interface AuthResponse {
     token: string;
@@ -55,3 +62,4 @@ export interface OrderResponse {
     totalCost: number;
     items: OrderItemResponse[];
 }
+

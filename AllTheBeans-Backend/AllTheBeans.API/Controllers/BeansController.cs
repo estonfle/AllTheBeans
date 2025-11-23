@@ -15,9 +15,12 @@ public class BeansController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetBeans([FromQuery] string? search)
+    public async Task<IActionResult> GetBeans(
+        [FromQuery] string? search, 
+        [FromQuery] int page = 1, 
+        [FromQuery] int pageSize = 9)
     {
-        var result = await _beanService.SearchBeansAsync(search);
+        var result = await _beanService.SearchBeansAsync(search, page, pageSize);
         return Ok(result);
     }
 

@@ -1,3 +1,4 @@
+using AllTheBeans.Application.DTOs;
 using AllTheBeans.Domain.Entities;
 using AllTheBeans.Domain.Interfaces;
 
@@ -12,20 +13,35 @@ public class BeanService : IBeanService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<CoffeeBean>> SearchBeansAsync(string? query)
+    public async Task<PagedResult<CoffeeBean>> SearchBeansAsync(string? query, int page, int pageSize)
     {
-        var beans = await _repository.GetAllAsync();
+        var allBeans = await _repository.GetAllAsync(); 
 
-        if (string.IsNullOrWhiteSpace(query))
-            return beans;
-
-        var s = query.ToLower();
-        return beans.Where(b => 
+        if (!string.IsNullOrWhiteSpace(query))
+        {
+            var s = query.ToLower();
+            allBeans = allBeans.Where(b => 
             b.Name.ToLower().Contains(s) ||
             b.Description.ToLower().Contains(s) ||
             b.Colour.ToLower().Contains(s) ||
             b.Country.ToLower().Contains(s) ||
             b.Cost.ToString().Contains(s));
+        }
+
+        var list = allBeans.ToList();
+        
+        var pagedItems = list
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return new PagedResult<CoffeeBean>
+        {
+            Items = pagedItems,
+            TotalCount = list.Count,
+            PageNumber = page,
+            PageSize = pageSize
+        };
     }
 
     public async Task<CoffeeBean?> GetBeanByIdAsync(int id)
