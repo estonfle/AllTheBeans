@@ -1,10 +1,16 @@
-import { AppBar, Toolbar, Container, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Container, Badge, IconButton } from '@mui/material';
 import { Outlet, Link as RouterLink, useNavigate } from 'react-router-dom';
 import LocalCafeIcon from '@mui/icons-material/LocalCafe';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import CartDrawer from './CartDrawer';
+import { useState } from 'react';
 
 export default function Layout() {
     const { logout, user, isAuthenticated } = useAuth();
+    const { items } = useCart();
+    const [cartOpen, setCartOpen] = useState(false);
     const navigate = useNavigate();
 
     return (
@@ -28,12 +34,19 @@ export default function Layout() {
                         </>
                     )}
 
+                    <IconButton color="inherit" sx={{ ml: 2 }} onClick={() => setCartOpen(true)}>
+                        <Badge badgeContent={items.reduce((a, b) => a + b.quantity, 0)} color="secondary">
+                            <ShoppingCartIcon />
+                        </Badge>
+                    </IconButton>
                 </Toolbar>
             </AppBar>
 
             <Container maxWidth="lg" sx={{ py: 4 }}>
                 <Outlet />
             </Container>
+
+            <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
         </>
     );
 }
