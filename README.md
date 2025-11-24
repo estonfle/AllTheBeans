@@ -86,7 +86,7 @@ I used **xUnit**, **Moq**, and **FluentAssertions** (v6.12.0) to test the Servic
 
 To run backend tests:
 ```bash
-cd Backend/AllTheBeans.Tests
+cd AllTheBeans-Backend/AllTheBeans.Tests
 dotnet test
 ```
 
@@ -96,7 +96,7 @@ I used **Vitest** and **React Testing Library** to test components and state log
 
 To run frontend tests:
 ```bash
-cd Frontend
+cd AllTheBeans-Frontend
 npm test
 ```
 
