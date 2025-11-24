@@ -15,7 +15,7 @@ public class BeanService : IBeanService
 
     public async Task<PagedResult<CoffeeBean>> SearchBeansAsync(string? query, int page, int pageSize)
     {
-        var allBeans = await _repository.GetAllAsync(); 
+        var allBeans = await _repository.GetAllAsync();
 
         if (!string.IsNullOrWhiteSpace(query))
         {
@@ -29,6 +29,7 @@ public class BeanService : IBeanService
         }
 
         var list = allBeans.ToList();
+        var totalCount = list.Count;
         
         var pagedItems = list
             .Skip((page - 1) * pageSize)
@@ -38,7 +39,7 @@ public class BeanService : IBeanService
         return new PagedResult<CoffeeBean>
         {
             Items = pagedItems,
-            TotalCount = list.Count,
+            TotalCount = totalCount,
             PageNumber = page,
             PageSize = pageSize
         };

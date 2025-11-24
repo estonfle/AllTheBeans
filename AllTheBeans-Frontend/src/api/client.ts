@@ -1,8 +1,12 @@
 import axios from 'axios';
 import eventBus from '../utils/eventBus';
 
+const baseURL = import.meta.env.PROD
+    ? '/api'
+    : 'http://localhost:5089/api';
+
 const API = axios.create({
-    baseURL: 'http://localhost:5089',
+    baseURL: baseURL,
     headers: {
         'Content-Type': 'application/json'
     }

@@ -8,7 +8,7 @@ import CartDrawer from './CartDrawer';
 import { useState } from 'react';
 
 export default function Layout() {
-    const { logout, user, isAuthenticated } = useAuth();
+    const { logout, isAuthenticated } = useAuth();
     const { items } = useCart();
     const [cartOpen, setCartOpen] = useState(false);
     const navigate = useNavigate();

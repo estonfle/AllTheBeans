@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AllTheBeans.API.Controllers;
 
-[Route("orders")]
+[Route("api/[controller]")]
 [ApiController]
 [Authorize]
 public class OrdersController : ControllerBase

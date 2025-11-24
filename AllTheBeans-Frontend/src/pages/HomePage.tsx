@@ -25,7 +25,7 @@ export default function HomePage() {
                     beansApi.getAll('', 1),
                     beansApi.getBotd()
                 ]);
-                setBeans(pagedData.items);
+                setBeans(pagedData.items || []);
                 setTotalCount(pagedData.totalCount);
                 setBotd(botdData);
             } finally {
@@ -43,7 +43,7 @@ export default function HomePage() {
 
         try {
             const data = await beansApi.getAll(search, value);
-            setBeans(data.items);
+            setBeans(data.items || []);
             setTotalCount(data.totalCount);
         } finally {
             setLoading(false);
@@ -61,7 +61,7 @@ export default function HomePage() {
             setLoading(true);
             try {
                 const data = await beansApi.getAll(val, 1);
-                setBeans(data.items);
+                setBeans(data.items || []);
                 setTotalCount(data.totalCount);
             } finally {
                 setLoading(false);
