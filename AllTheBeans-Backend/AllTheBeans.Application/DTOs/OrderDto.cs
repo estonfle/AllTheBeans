@@ -4,8 +4,12 @@ namespace AllTheBeans.Application.DTOs;
 
 public record CreateOrderItemDto
 {
-    [Required] public int BeanId { get; set; }
-    [Required] [Range(1, 100)] public int Quantity { get; set; }
+    [Required] 
+    public int BeanId { get; set; }
+
+    [Required] 
+    [Range(1, 100)] 
+    public int Quantity { get; set; }
 }
 
 public record CreateOrderDto

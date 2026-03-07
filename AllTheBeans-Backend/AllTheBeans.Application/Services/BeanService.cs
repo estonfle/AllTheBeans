@@ -13,7 +13,7 @@ public class BeanService : IBeanService
         _repository = repository;
     }
 
-    public async Task<PagedResult<CoffeeBean>> SearchBeansAsync(string? query, int page, int pageSize)
+    public async Task<PagedResultDto<CoffeeBean>> SearchBeansAsync(string? query, int page, int pageSize)
     {
         var allBeans = await _repository.GetAllAsync();
 
@@ -36,7 +36,7 @@ public class BeanService : IBeanService
             .Take(pageSize)
             .ToList();
 
-        return new PagedResult<CoffeeBean>
+        return new PagedResultDto<CoffeeBean>
         {
             Items = pagedItems,
             TotalCount = totalCount,
