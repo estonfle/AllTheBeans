@@ -1,21 +1,22 @@
-import API from './client';
-import type { CoffeeBean, PagedResult } from '../types';
+import axiosInstance from './axios-instance';
+import type { CoffeeBean } from '../types/models';
+import type { PagedResult, PaginationParams } from '../types/common';
 
 export const beansApi = {
-    getAll: async (search: string = '', page: number = 1) => {
-        const res = await API.get<PagedResult<CoffeeBean>>('/beans', {
-            params: { search, page, pageSize: 9 }
+    getAll: async (params: PaginationParams = { search: '', page: 1, pageSize: 9 }) => {
+        const res = await axiosInstance.get<PagedResult<CoffeeBean>>('/beans', {
+            params: params
         });
         return res.data;
     },
 
     getById: async (id: string | number) => {
-        const res = await API.get<CoffeeBean>(`/beans/${id}`);
+        const res = await axiosInstance.get<CoffeeBean>(`/beans/${id}`);
         return res.data;
     },
 
     getBotd: async () => {
-        const res = await API.get<CoffeeBean>('/beans/botd');
+        const res = await axiosInstance.get<CoffeeBean>('/beans/botd');
         return res.data;
     }
 };

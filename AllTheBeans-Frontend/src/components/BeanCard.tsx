@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Typography, Box, Chip } from '@mui/material';
-import type { CoffeeBean } from '../types';
+import type { CoffeeBean } from '../types/models';
 import { getOptimizedImageUrl } from '../utils/imageOptimizer';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function BeanCard({ bean, isBotd, onClick }: Props) {
-    const optimizedImage = getOptimizedImageUrl(bean.image, 400);
+    const optimizedImage = getOptimizedImageUrl(bean.image!, 400);
 
     return (
         <Card
@@ -21,7 +21,7 @@ export default function BeanCard({ bean, isBotd, onClick }: Props) {
             onClick={onClick}
         >
             {isBotd && <Box sx={{ bgcolor: 'gold', textAlign: 'center', py: 0.5, fontWeight: 'bold' }}>🌟 Bean of the Day 🌟</Box>}
-            <CardMedia component="img" height="160" image={optimizedImage} alt={bean.name} loading="lazy" />
+            <CardMedia component="img" height="160" image={optimizedImage} alt={bean.name!} loading="lazy" />
             <CardContent sx={{ flexGrow: 1 }}>
                 <Box display="flex" justifyContent="space-between" alignItems="start">
                     <Typography variant="h6" component="div">{bean.name}</Typography>

@@ -1,14 +1,14 @@
-import API from './client';
-import type { LoginRequest, RegisterRequest, AuthResponse } from '../types';
+import axiosInstance from './axios-instance';
+import type { LoginDto, RegisterDto, AuthResponseDto } from '../types/models';
 
 export const authApi = {
-    login: async (data: LoginRequest) => {
-        const res = await API.post<AuthResponse>('/auth/login', data);
+    login: async (data: LoginDto) => {
+        const res = await axiosInstance.post<AuthResponseDto>('/auth/login', data);
         return res.data;
     },
 
-    register: async (data: RegisterRequest) => {
-        const res = await API.post('/auth/register', data);
+    register: async (data: RegisterDto) => {
+        const res = await axiosInstance.post<AuthResponseDto>('/auth/register', data);
         return res.data;
     }
 };

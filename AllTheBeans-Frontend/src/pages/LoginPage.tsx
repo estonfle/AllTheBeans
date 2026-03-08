@@ -16,7 +16,7 @@ export default function LoginPage() {
         e.preventDefault();
         try {
             const data = await authApi.login({ email, password });
-            login(data.token, data.email);
+            login(data.token!, data.email!);
             showNotification("Welcome back!", "success");
             navigate('/');
         } catch (err) { /* Handled globally */ }

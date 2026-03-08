@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Box, Chip, TextField } from '@mui/material';
-import type { CoffeeBean } from '../types';
+import type { CoffeeBean } from '../types/models';
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useNotification } from '../context/NotificationContext';
@@ -29,8 +29,8 @@ export default function BeanDetailDialog({ bean, open, onClose }: Props) {
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
             <Box position="relative">
                 <img
-                    src={getOptimizedImageUrl(bean.image, 800)}
-                    alt={bean.name}
+                    src={getOptimizedImageUrl(bean.image!, 800)}
+                    alt={bean.name!}
                     style={{ width: '100%', height: '250px', objectFit: 'cover' }}
                 />
             </Box>

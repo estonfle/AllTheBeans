@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Typography, Paper, Box, Button, Grid, CircularProgress, Divider } from '@mui/material';
-import type { OrderResponse } from '../types';
+import type { OrderResponseDto } from '../types/models';
 import { ordersApi } from '../api/orders';
 import EditOrderDialog from '../components/EditOrderDialog';
 import { useNotification } from '../context/NotificationContext';
 
 export default function OrdersPage() {
-    const [orders, setOrders] = useState<OrderResponse[]>([]);
+    const [orders, setOrders] = useState<OrderResponseDto[]>([]);
     const [loading, setLoading] = useState(true);
-    const [editingOrder, setEditingOrder] = useState<OrderResponse | null>(null);
+    const [editingOrder, setEditingOrder] = useState<OrderResponseDto | null>(null);
     const { showNotification } = useNotification();
 
     const fetchOrders = () => {
@@ -44,21 +44,21 @@ export default function OrdersPage() {
                             <Typography variant="h6">
                                 Order #{order.orderId}
                                 <Typography component="span" variant="body2" color="text.secondary" sx={{ ml: 2 }}>
-                                    {new Date(order.orderDate).toLocaleDateString()}
+                                    {new Date(order.orderDate!).toLocaleDateString()}
                                 </Typography>
                             </Typography>
                             <Box>
                                 <Button size="small" sx={{ mr: 1 }} onClick={() => setEditingOrder(order)}>Modify</Button>
-                                <Button size="small" color="error" onClick={() => handleCancel(order.orderId)}>Cancel</Button>
+                                <Button size="small" color="error" onClick={() => handleCancel(order.orderId!)}>Cancel</Button>
                             </Box>
                         </Box>
                         <Divider sx={{ mb: 2 }} />
 
                         <Grid container spacing={2}>
-                            {order.items.map((item, idx) => (
+                            {order.items!.map((item, idx) => (
                                 <Grid size={{ xs: 12, sm: 6 }} key={idx}>
                                     <Box display="flex" alignItems="center" gap={2}>
-                                        <img src={item.image} alt={item.beanName} style={{ width: 50, height: 50, borderRadius: 4, objectFit: 'cover' }} />
+                                        <img src={item.image!} alt={item.beanName!} style={{ width: 50, height: 50, borderRadius: 4, objectFit: 'cover' }} />
                                         <Box>
                                             <Typography variant="subtitle2">{item.beanName}</Typography>
                                             <Typography variant="caption">Qty: {item.quantity} x £{item.unitPrice}</Typography>
@@ -68,7 +68,7 @@ export default function OrdersPage() {
                             ))}
                         </Grid>
                         <Box mt={2} textAlign="right">
-                            <Typography variant="h6" color="primary">Total: £{order.totalCost.toFixed(2)}</Typography>
+                            <Typography variant="h6" color="primary">Total: £{order.totalCost!.toFixed(2)}</Typography>
                         </Box>
                     </Paper>
                 ))}

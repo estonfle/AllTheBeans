@@ -1,24 +1,24 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListItem, ListItemText, TextField, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
-import type { OrderResponse, OrderItemRequest } from '../types';
+import type { OrderResponseDto, CreateOrderItemDto } from '../types/models';
 import { ordersApi } from '../api/orders';
 import { useNotification } from '../context/NotificationContext';
 
 interface Props {
-    order: OrderResponse | null;
+    order: OrderResponseDto | null;
     onClose: () => void;
     onSuccess: () => void;
 }
 
 export default function EditOrderDialog({ order, onClose, onSuccess }: Props) {
     // We map the complex response to the simple request format for editing
-    const [items, setItems] = useState<OrderItemRequest[]>([]);
+    const [items, setItems] = useState<CreateOrderItemDto[]>([]);
     const { showNotification } = useNotification();
 
     useEffect(() => {
         if (order) {
-            setItems(order.items.map(i => ({ beanId: i.beanId, quantity: i.quantity })));
+            setItems(order.items!.map(i => ({ beanId: i.beanId!, quantity: i.quantity! })));
         }
     }, [order]);
 
@@ -37,7 +37,7 @@ export default function EditOrderDialog({ order, onClose, onSuccess }: Props) {
             return;
         }
         try {
-            await ordersApi.updateOrder(order.orderId, { items });
+            await ordersApi.updateOrder(order.orderId!, { items });
             showNotification("Order updated successfully", "success");
             onSuccess();
             onClose();
@@ -53,7 +53,7 @@ export default function EditOrderDialog({ order, onClose, onSuccess }: Props) {
             <DialogTitle>Modify Order #{order.orderId}</DialogTitle>
             <DialogContent>
                 <List>
-                    {order.items.map(item => {
+                    {order.items!.map(item => {
                         // Find current current quantity in local state
                         const currentQty = items.find(i => i.beanId === item.beanId)?.quantity || 0;
                         if (currentQty === 0) return null; // Effectively removed
@@ -67,9 +67,9 @@ export default function EditOrderDialog({ order, onClose, onSuccess }: Props) {
                                 <TextField
                                     type="number" size="small" sx={{ width: 80, mr: 2 }}
                                     value={currentQty}
-                                    onChange={(e) => handleUpdateQty(item.beanId, parseInt(e.target.value))}
+                                    onChange={(e) => handleUpdateQty(item.beanId!, parseInt(e.target.value))}
                                 />
-                                <IconButton color="error" onClick={() => handleRemove(item.beanId)}>
+                                <IconButton color="error" onClick={() => handleRemove(item.beanId!)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </ListItem>

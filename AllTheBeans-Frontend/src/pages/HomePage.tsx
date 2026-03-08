@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Grid, TextField, Box, Typography, CircularProgress, Pagination } from '@mui/material';
-import type { CoffeeBean } from '../types';
+import type { CoffeeBean } from '../types/models';
 import { beansApi } from '../api/beans';
 import BeanCard from '../components/BeanCard';
 import BeanDetailDialog from '../components/BeanDetailDialog';
@@ -22,11 +22,11 @@ export default function HomePage() {
         const initFetch = async () => {
             try {
                 const [pagedData, botdData] = await Promise.all([
-                    beansApi.getAll('', 1),
+                    beansApi.getAll({}),
                     beansApi.getBotd()
                 ]);
                 setBeans(pagedData.items || []);
-                setTotalCount(pagedData.totalCount);
+                setTotalCount(pagedData.totalCount!);
                 setBotd(botdData);
             } finally {
                 setLoading(false);
@@ -42,9 +42,9 @@ export default function HomePage() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         try {
-            const data = await beansApi.getAll(search, value);
+            const data = await beansApi.getAll({ search, page: value });
             setBeans(data.items || []);
-            setTotalCount(data.totalCount);
+            setTotalCount(data.totalCount!);
         } finally {
             setLoading(false);
         }
@@ -60,9 +60,9 @@ export default function HomePage() {
             setPage(1);
             setLoading(true);
             try {
-                const data = await beansApi.getAll(val, 1);
+                const data = await beansApi.getAll({ search: val });
                 setBeans(data.items || []);
-                setTotalCount(data.totalCount);
+                setTotalCount(data.totalCount!);
             } finally {
                 setLoading(false);
             }

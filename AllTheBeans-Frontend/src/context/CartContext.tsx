@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import type { CoffeeBean } from '../types';
+import type { CoffeeBean } from '../types/models';
 
 interface CartItem {
     bean: CoffeeBean;
@@ -37,7 +37,7 @@ export const CartProvider = ({ children }: { children: ReactNode; }) => {
 
     const clearCart = () => setItems([]);
 
-    const totalCost = items.reduce((sum, item) => sum + (item.bean.cost * item.quantity), 0);
+    const totalCost = items.reduce((sum, item) => sum + (item.bean.cost! * item.quantity), 0);
 
     return (
         <CartContext.Provider value={{ items, addToCart, removeFromCart, clearCart, totalCost }}>

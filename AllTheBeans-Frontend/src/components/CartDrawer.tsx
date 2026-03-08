@@ -25,7 +25,7 @@ export default function CartDrawer({ open, onClose }: Props) {
         }
 
         try {
-            const payload = { items: items.map(i => ({ beanId: i.bean.id, quantity: i.quantity })) };
+            const payload = { items: items.map(i => ({ beanId: i.bean.id!, quantity: i.quantity })) };
             await ordersApi.createOrder(payload);
             showNotification("Order placed successfully!", "success");
             clearCart();
@@ -44,11 +44,11 @@ export default function CartDrawer({ open, onClose }: Props) {
                     {items.length === 0 && <Typography sx={{ mt: 2, textAlign: 'center' }}>Cart is empty</Typography>}
                     {items.map(item => (
                         <ListItem key={item.bean.id} secondaryAction={
-                            <IconButton edge="end" onClick={() => removeFromCart(item.bean.id)}><DeleteIcon /></IconButton>
+                            <IconButton edge="end" onClick={() => removeFromCart(item.bean.id!)}><DeleteIcon /></IconButton>
                         }>
                             <ListItemText
                                 primary={item.bean.name}
-                                secondary={`${item.quantity} x £${item.bean.cost} = £${(item.quantity * item.bean.cost).toFixed(2)}`}
+                                secondary={`${item.quantity} x £${item.bean.cost} = £${(item.quantity * item.bean.cost!).toFixed(2)}`}
                             />
                         </ListItem>
                     ))}
