@@ -16,37 +16,32 @@ import {
 import type {
   RequestHandlerOptions
 } from 'msw';
-import type { AuthResponseDto } from '../../models';
 
 
-export const getPostApiAuthLoginResponseMock = (overrideResponse: Partial<AuthResponseDto> = {}): AuthResponseDto => ({ token: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), null]), undefined]), username: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), null]), undefined]), email: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), null]), undefined]), ...overrideResponse });
+export const getLoginResponseMock = (overrideResponse: Partial< AuthResponseDto > = {}): AuthResponseDto => ({token: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), username: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), email: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), ...overrideResponse})
 
 
-export const getPostApiAuthRegisterMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
-  return http.post('*/api/auth/register', async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === 'function') { await overrideResponse(info); }
+export const getRegisterMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.post('*/api/auth/register', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
     return new HttpResponse(null,
-      {
-        status: 200,
+      { status: 200,
+        
+      })
+  }, options)
+}
 
-      });
-  }, options);
-};
-
-export const getPostApiAuthLoginMockHandler = (overrideResponse?: AuthResponseDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<AuthResponseDto> | AuthResponseDto), options?: RequestHandlerOptions) => {
-  return http.post('*/api/auth/login', async (info) => {
-    await delay(1000);
-
+export const getLoginMockHandler = (overrideResponse?: AuthResponseDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<AuthResponseDto> | AuthResponseDto), options?: RequestHandlerOptions) => {
+  return http.post('*/api/auth/login', async (info) => {await delay(1000);
+  
     return new HttpResponse(overrideResponse !== undefined
-      ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-      : getPostApiAuthLoginResponseMock(),
-      {
-        status: 200,
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getLoginResponseMock(),
+      { status: 200,
         headers: { 'Content-Type': 'text/plain' }
-      });
-  }, options);
-};
+      })
+  }, options)
+}
 export const getAuthMock = () => [
-  getPostApiAuthRegisterMockHandler(),
-  getPostApiAuthLoginMockHandler()];
+  getRegisterMockHandler(),
+  getLoginMockHandler()]

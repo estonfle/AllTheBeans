@@ -13,37 +13,39 @@ import type {
 import type {
   CoffeeBean,
   CoffeeBeanPagedResultDto,
-  GetApiBeansParams
+  GetAllBeansParams
 } from '../../models';
 
 
 
 
-  export const getBeans = () => {
-const getApiBeans = <TData = AxiosResponse<CoffeeBeanPagedResultDto>>(
-    params?: GetApiBeansParams, options?: AxiosRequestConfig
- ): Promise<TData> => {
+export const getBeans = () => {
+  const getAllBeans = <TData = AxiosResponse<CoffeeBeanPagedResultDto>>(
+    params?: GetAllBeansParams, options?: AxiosRequestConfig
+  ): Promise<TData> => {
     return axios.default.get(
-      `/api/beans`,{
-    ...options,
-        params: {...params, ...options?.params},}
+      `/api/beans`, {
+      ...options,
+      params: { ...params, ...options?.params },
+    }
     );
-  }
-const getApiBeansId = <TData = AxiosResponse<CoffeeBean>>(
+  };
+  const getBeanById = <TData = AxiosResponse<CoffeeBean>>(
     id: number, options?: AxiosRequestConfig
- ): Promise<TData> => {
+  ): Promise<TData> => {
     return axios.default.get(
-      `/api/beans/${id}`,options
+      `/api/beans/${id}`, options
     );
-  }
-const getApiBeansBotd = <TData = AxiosResponse<CoffeeBean>>(
-     options?: AxiosRequestConfig
- ): Promise<TData> => {
+  };
+  const getBeanOfTheDay = <TData = AxiosResponse<CoffeeBean>>(
+    options?: AxiosRequestConfig
+  ): Promise<TData> => {
     return axios.default.get(
-      `/api/beans/botd`,options
+      `/api/beans/botd`, options
     );
-  }
-return {getApiBeans,getApiBeansId,getApiBeansBotd}};
-export type GetApiBeansResult = AxiosResponse<CoffeeBeanPagedResultDto>
-export type GetApiBeansIdResult = AxiosResponse<CoffeeBean>
-export type GetApiBeansBotdResult = AxiosResponse<CoffeeBean>
+  };
+  return { getAllBeans, getBeanById, getBeanOfTheDay };
+};
+export type GetAllBeansResult = AxiosResponse<CoffeeBeanPagedResultDto>;
+export type GetBeanByIdResult = AxiosResponse<CoffeeBean>;
+export type GetBeanOfTheDayResult = AxiosResponse<CoffeeBean>;

@@ -19,7 +19,7 @@ public class OrdersController : ControllerBase
     }
 
     // GET: api/orders (History)
-    [HttpGet]
+    [HttpGet(Name = "getMyOrders")]
     public async Task<ActionResult<IEnumerable<OrderResponseDto>?>> GetMyOrders()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -30,7 +30,7 @@ public class OrdersController : ControllerBase
     }
 
     // POST: api/orders (Create)
-    [HttpPost]
+    [HttpPost(Name = "createOrder")]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -41,7 +41,7 @@ public class OrdersController : ControllerBase
     }
 
     // PUT: api/orders/5 (Modify)
-    [HttpPut("{id}")]
+    [HttpPut("{id}", Name = "updateOrder")]
     public async Task<ActionResult> UpdateOrder(int id, [FromBody] UpdateOrderDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -52,7 +52,7 @@ public class OrdersController : ControllerBase
     }
 
     // DELETE: api/orders/5 (Cancel)
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}", Name = "cancelOrder")]
     public async Task<ActionResult> CancelOrder(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

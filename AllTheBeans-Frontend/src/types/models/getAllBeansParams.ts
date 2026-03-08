@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export type GetApiBeansParams = {
+export type GetAllBeansParams = {
 Search?: string;
 Page?: number;
 PageSize?: number;

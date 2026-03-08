@@ -20,14 +20,14 @@ import type {
 
 
   export const getOrders = () => {
-const getApiOrders = <TData = AxiosResponse<OrderResponseDto[]>>(
+const getMyOrders = <TData = AxiosResponse<OrderResponseDto[]>>(
      options?: AxiosRequestConfig
  ): Promise<TData> => {
     return axios.default.get(
       `/api/orders`,options
     );
   }
-const postApiOrders = <TData = AxiosResponse<void>>(
+const createOrder = <TData = AxiosResponse<void>>(
     createOrderDto: CreateOrderDto, options?: AxiosRequestConfig
  ): Promise<TData> => {
     return axios.default.post(
@@ -35,7 +35,7 @@ const postApiOrders = <TData = AxiosResponse<void>>(
       createOrderDto,options
     );
   }
-const putApiOrdersId = <TData = AxiosResponse<void>>(
+const updateOrder = <TData = AxiosResponse<void>>(
     id: number,
     updateOrderDto: UpdateOrderDto, options?: AxiosRequestConfig
  ): Promise<TData> => {
@@ -44,15 +44,15 @@ const putApiOrdersId = <TData = AxiosResponse<void>>(
       updateOrderDto,options
     );
   }
-const deleteApiOrdersId = <TData = AxiosResponse<void>>(
+const cancelOrder = <TData = AxiosResponse<void>>(
     id: number, options?: AxiosRequestConfig
  ): Promise<TData> => {
     return axios.default.delete(
       `/api/orders/${id}`,options
     );
   }
-return {getApiOrders,postApiOrders,putApiOrdersId,deleteApiOrdersId}};
-export type GetApiOrdersResult = AxiosResponse<OrderResponseDto[]>
-export type PostApiOrdersResult = AxiosResponse<void>
-export type PutApiOrdersIdResult = AxiosResponse<void>
-export type DeleteApiOrdersIdResult = AxiosResponse<void>
+return {getMyOrders,createOrder,updateOrder,cancelOrder}};
+export type GetMyOrdersResult = AxiosResponse<OrderResponseDto[]>
+export type CreateOrderResult = AxiosResponse<void>
+export type UpdateOrderResult = AxiosResponse<void>
+export type CancelOrderResult = AxiosResponse<void>

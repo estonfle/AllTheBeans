@@ -15,7 +15,7 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    [HttpPost("register")]
+    [HttpPost("register", Name = "register")]
     public async Task<ActionResult> Register([FromBody] RegisterDto dto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
         return Ok(new { Message = "User registered successfully" });
     }
 
-    [HttpPost("login")]
+    [HttpPost("login", Name = "login")]
     public async Task<ActionResult<AuthResponseDto?>> Login([FromBody] LoginDto dto)
     {
         var result = await _authService.LoginAsync(dto);

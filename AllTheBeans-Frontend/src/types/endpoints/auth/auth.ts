@@ -19,23 +19,24 @@ import type {
 
 
 
-  export const getAuth = () => {
-const postApiAuthRegister = <TData = AxiosResponse<void>>(
+export const getAuth = () => {
+  const register = <TData = AxiosResponse<void>>(
     registerDto: RegisterDto, options?: AxiosRequestConfig
- ): Promise<TData> => {
+  ): Promise<TData> => {
     return axios.default.post(
       `/api/auth/register`,
-      registerDto,options
+      registerDto, options
     );
-  }
-const postApiAuthLogin = <TData = AxiosResponse<AuthResponseDto>>(
+  };
+  const login = <TData = AxiosResponse<AuthResponseDto>>(
     loginDto: LoginDto, options?: AxiosRequestConfig
- ): Promise<TData> => {
+  ): Promise<TData> => {
     return axios.default.post(
       `/api/auth/login`,
-      loginDto,options
+      loginDto, options
     );
-  }
-return {postApiAuthRegister,postApiAuthLogin}};
-export type PostApiAuthRegisterResult = AxiosResponse<void>
-export type PostApiAuthLoginResult = AxiosResponse<AuthResponseDto>
+  };
+  return { register, login };
+};
+export type RegisterResult = AxiosResponse<void>;
+export type LoginResult = AxiosResponse<AuthResponseDto>;

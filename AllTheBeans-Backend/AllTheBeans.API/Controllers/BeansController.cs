@@ -16,7 +16,7 @@ public class BeansController : ControllerBase
         _beanService = beanService;
     }
 
-    [HttpGet]
+    [HttpGet(Name = "getAllBeans")]
     public async Task<ActionResult<PagedResultDto<CoffeeBean>>> GetBeans(
         [FromQuery] GetBeansDto dto)
     {
@@ -24,7 +24,7 @@ public class BeansController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "getBeanById")]
     public async Task<ActionResult<CoffeeBean?>> GetBean(int id)
     {
         var bean = await _beanService.GetBeanByIdAsync(id);
@@ -32,7 +32,7 @@ public class BeansController : ControllerBase
         return Ok(bean);
     }
 
-    [HttpGet("botd")]
+    [HttpGet("botd", Name = "getBeanOfTheDay")]
     public async Task<ActionResult<CoffeeBean>> GetBeanOfTheDay()
     {
         try 

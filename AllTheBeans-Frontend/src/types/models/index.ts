@@ -10,7 +10,7 @@ export * from './coffeeBean';
 export * from './coffeeBeanPagedResultDto';
 export * from './createOrderDto';
 export * from './createOrderItemDto';
-export * from './getApiBeansParams';
+export * from './getAllBeansParams';
 export * from './loginDto';
 export * from './orderItemResponseDto';
 export * from './orderResponseDto';
