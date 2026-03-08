@@ -20,7 +20,7 @@ public class OrdersController : ControllerBase
 
     // GET: api/orders (History)
     [HttpGet]
-    public async Task<IActionResult> GetMyOrders()
+    public async Task<ActionResult<IEnumerable<OrderResponseDto>?>> GetMyOrders()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
@@ -42,7 +42,7 @@ public class OrdersController : ControllerBase
 
     // PUT: api/orders/5 (Modify)
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateOrder(int id, [FromBody] UpdateOrderDto dto)
+    public async Task<ActionResult> UpdateOrder(int id, [FromBody] UpdateOrderDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
@@ -53,7 +53,7 @@ public class OrdersController : ControllerBase
 
     // DELETE: api/orders/5 (Cancel)
     [HttpDelete("{id}")]
-    public async Task<IActionResult> CancelOrder(int id)
+    public async Task<ActionResult> CancelOrder(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId)) return Unauthorized();

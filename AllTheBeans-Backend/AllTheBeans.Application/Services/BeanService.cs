@@ -13,13 +13,13 @@ public class BeanService : IBeanService
         _repository = repository;
     }
 
-    public async Task<PagedResultDto<CoffeeBean>> SearchBeansAsync(string? query, int page, int pageSize)
+    public async Task<PagedResultDto<CoffeeBean>> SearchBeansAsync(GetBeansDto dto)
     {
         var allBeans = await _repository.GetAllAsync();
 
-        if (!string.IsNullOrWhiteSpace(query))
+        if (!string.IsNullOrWhiteSpace(dto.Search))
         {
-            var s = query.ToLower();
+            var s = dto.Search.ToLower();
             allBeans = allBeans.Where(b => 
             b.Name.ToLower().Contains(s) ||
             b.Description.ToLower().Contains(s) ||
@@ -32,16 +32,16 @@ public class BeanService : IBeanService
         var totalCount = list.Count;
         
         var pagedItems = list
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((dto.Page - 1) * dto.PageSize)
+            .Take(dto.PageSize)
             .ToList();
 
         return new PagedResultDto<CoffeeBean>
         {
             Items = pagedItems,
             TotalCount = totalCount,
-            PageNumber = page,
-            PageSize = pageSize
+            PageNumber = dto.Page,
+            PageSize = dto.PageSize
         };
     }
 

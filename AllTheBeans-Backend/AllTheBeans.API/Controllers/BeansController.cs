@@ -1,4 +1,6 @@
+using AllTheBeans.Application.DTOs;
 using AllTheBeans.Application.Services;
+using AllTheBeans.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AllTheBeans.API.Controllers;
@@ -15,17 +17,15 @@ public class BeansController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetBeans(
-        [FromQuery] string? search, 
-        [FromQuery] int page = 1, 
-        [FromQuery] int pageSize = 9)
+    public async Task<ActionResult<PagedResultDto<CoffeeBean>>> GetBeans(
+        [FromQuery] GetBeansDto dto)
     {
-        var result = await _beanService.SearchBeansAsync(search, page, pageSize);
+        var result = await _beanService.SearchBeansAsync(dto);
         return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetBean(int id)
+    public async Task<ActionResult<CoffeeBean?>> GetBean(int id)
     {
         var bean = await _beanService.GetBeanByIdAsync(id);
         if (bean == null) return NotFound();
@@ -33,7 +33,7 @@ public class BeansController : ControllerBase
     }
 
     [HttpGet("botd")]
-    public async Task<IActionResult> GetBeanOfTheDay()
+    public async Task<ActionResult<CoffeeBean>> GetBeanOfTheDay()
     {
         try 
         {
