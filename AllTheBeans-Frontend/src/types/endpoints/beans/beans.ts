@@ -4,48 +4,45 @@
  * AllTheBeans.API
  * OpenAPI spec version: 1.0
  */
-import * as axios from 'axios';
-import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   CoffeeBean,
   CoffeeBeanPagedResultDto,
   GetAllBeansParams
 } from '../../models';
 
+import { customInstance } from '../../../api/mutator';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export const getBeans = () => {
-  const getAllBeans = <TData = AxiosResponse<CoffeeBeanPagedResultDto>>(
-    params?: GetAllBeansParams, options?: AxiosRequestConfig
-  ): Promise<TData> => {
-    return axios.default.get(
-      `/api/beans`, {
-      ...options,
-      params: { ...params, ...options?.params },
+
+  export const getBeans = () => {
+const getAllBeans = (
+    params?: GetAllBeansParams,
+ options?: SecondParameter<typeof customInstance<CoffeeBeanPagedResultDto>>,) => {
+      return customInstance<CoffeeBeanPagedResultDto>(
+      {url: `/api/beans`, method: 'GET',
+        params
+    },
+      options);
     }
-    );
-  };
-  const getBeanById = <TData = AxiosResponse<CoffeeBean>>(
-    id: number, options?: AxiosRequestConfig
-  ): Promise<TData> => {
-    return axios.default.get(
-      `/api/beans/${id}`, options
-    );
-  };
-  const getBeanOfTheDay = <TData = AxiosResponse<CoffeeBean>>(
-    options?: AxiosRequestConfig
-  ): Promise<TData> => {
-    return axios.default.get(
-      `/api/beans/botd`, options
-    );
-  };
-  return { getAllBeans, getBeanById, getBeanOfTheDay };
-};
-export type GetAllBeansResult = AxiosResponse<CoffeeBeanPagedResultDto>;
-export type GetBeanByIdResult = AxiosResponse<CoffeeBean>;
-export type GetBeanOfTheDayResult = AxiosResponse<CoffeeBean>;
+  const getBeanById = (
+    id: number,
+ options?: SecondParameter<typeof customInstance<CoffeeBean>>,) => {
+      return customInstance<CoffeeBean>(
+      {url: `/api/beans/${id}`, method: 'GET'
+    },
+      options);
+    }
+  const getBeanOfTheDay = (
+    
+ options?: SecondParameter<typeof customInstance<CoffeeBean>>,) => {
+      return customInstance<CoffeeBean>(
+      {url: `/api/beans/botd`, method: 'GET'
+    },
+      options);
+    }
+  return {getAllBeans,getBeanById,getBeanOfTheDay}};
+export type GetAllBeansResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getAllBeans']>>>
+export type GetBeanByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getBeanById']>>>
+export type GetBeanOfTheDayResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getBeanOfTheDay']>>>

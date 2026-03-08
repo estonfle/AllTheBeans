@@ -4,55 +4,63 @@
  * AllTheBeans.API
  * OpenAPI spec version: 1.0
  */
-import * as axios from 'axios';
-import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   CreateOrderDto,
   OrderResponseDto,
   UpdateOrderDto
 } from '../../models';
 
+import { customInstance } from '../../../api/mutator';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-  export const getOrders = () => {
-const getMyOrders = <TData = AxiosResponse<OrderResponseDto[]>>(
-     options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.default.get(
-      `/api/orders`,options
-    );
-  }
-const createOrder = <TData = AxiosResponse<void>>(
-    createOrderDto: CreateOrderDto, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.default.post(
-      `/api/orders`,
-      createOrderDto,options
-    );
-  }
-const updateOrder = <TData = AxiosResponse<void>>(
+
+export const getOrders = () => {
+  const getMyOrders = (
+
+    options?: SecondParameter<typeof customInstance<OrderResponseDto[]>>,) => {
+    return customInstance<OrderResponseDto[]>(
+      {
+        url: `/api/orders`, method: 'GET'
+      },
+      options);
+  };
+  const createOrder = (
+    createOrderDto: CreateOrderDto,
+    options?: SecondParameter<typeof customInstance<void>>,) => {
+    return customInstance<void>(
+      {
+        url: `/api/orders`, method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        data: createOrderDto
+      },
+      options);
+  };
+  const updateOrder = (
     id: number,
-    updateOrderDto: UpdateOrderDto, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.default.put(
-      `/api/orders/${id}`,
-      updateOrderDto,options
-    );
-  }
-const cancelOrder = <TData = AxiosResponse<void>>(
-    id: number, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.default.delete(
-      `/api/orders/${id}`,options
-    );
-  }
-return {getMyOrders,createOrder,updateOrder,cancelOrder}};
-export type GetMyOrdersResult = AxiosResponse<OrderResponseDto[]>
-export type CreateOrderResult = AxiosResponse<void>
-export type UpdateOrderResult = AxiosResponse<void>
-export type CancelOrderResult = AxiosResponse<void>
+    updateOrderDto: UpdateOrderDto,
+    options?: SecondParameter<typeof customInstance<void>>,) => {
+    return customInstance<void>(
+      {
+        url: `/api/orders/${id}`, method: 'PUT',
+        headers: { 'Content-Type': 'application/json', },
+        data: updateOrderDto
+      },
+      options);
+  };
+  const cancelOrder = (
+    id: number,
+    options?: SecondParameter<typeof customInstance<void>>,) => {
+    return customInstance<void>(
+      {
+        url: `/api/orders/${id}`, method: 'DELETE'
+      },
+      options);
+  };
+  return { getMyOrders, createOrder, updateOrder, cancelOrder };
+};
+export type GetMyOrdersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['getMyOrders']>>>;
+export type CreateOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['createOrder']>>>;
+export type UpdateOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['updateOrder']>>>;
+export type CancelOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['cancelOrder']>>>;

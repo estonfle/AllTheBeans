@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, TextField, Button, Typography, Paper, Box, Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { authApi } from '../api/auth';
+import { getAuth } from '../types/endpoints/auth/auth';
 import { useNotification } from '../context/NotificationContext';
 
 export default function RegisterPage() {
@@ -10,11 +10,12 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
     const { showNotification } = useNotification();
     const navigate = useNavigate();
+    const { register } = getAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await authApi.register({ email, username, password });
+            await register({ email, username, password });
             showNotification("Registration successful! Please login.", "success");
             navigate('/login');
         } catch (err) { /* Handled globally */ }

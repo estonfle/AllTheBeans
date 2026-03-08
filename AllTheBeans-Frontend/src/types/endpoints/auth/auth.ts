@@ -4,39 +4,42 @@
  * AllTheBeans.API
  * OpenAPI spec version: 1.0
  */
-import * as axios from 'axios';
-import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   AuthResponseDto,
   LoginDto,
   RegisterDto
 } from '../../models';
 
+import { customInstance } from '../../../api/mutator';
 
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 export const getAuth = () => {
-  const register = <TData = AxiosResponse<void>>(
-    registerDto: RegisterDto, options?: AxiosRequestConfig
-  ): Promise<TData> => {
-    return axios.default.post(
-      `/api/auth/register`,
-      registerDto, options
-    );
+  const register = (
+    registerDto: RegisterDto,
+    options?: SecondParameter<typeof customInstance<void>>,) => {
+    return customInstance<void>(
+      {
+        url: `/api/auth/register`, method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        data: registerDto
+      },
+      options);
   };
-  const login = <TData = AxiosResponse<AuthResponseDto>>(
-    loginDto: LoginDto, options?: AxiosRequestConfig
-  ): Promise<TData> => {
-    return axios.default.post(
-      `/api/auth/login`,
-      loginDto, options
-    );
+  const login = (
+    loginDto: LoginDto,
+    options?: SecondParameter<typeof customInstance<AuthResponseDto>>,) => {
+    return customInstance<AuthResponseDto>(
+      {
+        url: `/api/auth/login`, method: 'POST',
+        headers: { 'Content-Type': 'application/json', },
+        data: loginDto
+      },
+      options);
   };
   return { register, login };
 };
-export type RegisterResult = AxiosResponse<void>;
-export type LoginResult = AxiosResponse<AuthResponseDto>;
+export type RegisterResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAuth>['register']>>>;
+export type LoginResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAuth>['login']>>>;

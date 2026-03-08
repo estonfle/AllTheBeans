@@ -1,7 +1,7 @@
 import { Drawer, Box, Typography, List, ListItem, ListItemText, Button, IconButton, Divider } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useCart } from '../context/CartContext';
-import { ordersApi } from '../api/orders';
+import { getOrders } from '../types/endpoints/orders/orders';
 import { useNotification } from '../context/NotificationContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,8 @@ export default function CartDrawer({ open, onClose }: Props) {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
+    const { createOrder } = getOrders();
+
     const handleCheckout = async () => {
         if (!isAuthenticated) {
             onClose();
@@ -26,7 +28,7 @@ export default function CartDrawer({ open, onClose }: Props) {
 
         try {
             const payload = { items: items.map(i => ({ beanId: i.bean.id!, quantity: i.quantity })) };
-            await ordersApi.createOrder(payload);
+            await createOrder(payload);
             showNotification("Order placed successfully!", "success");
             clearCart();
             onClose();

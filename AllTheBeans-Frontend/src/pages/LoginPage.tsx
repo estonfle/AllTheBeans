@@ -1,22 +1,23 @@
 import { useState } from 'react';
 import { Container, TextField, Button, Typography, Paper, Box, Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { authApi } from '../api/auth';
+import { getAuth } from '../types/endpoints/auth/auth';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { login } = useAuth();
+    const { loginUser } = useAuth();
     const { showNotification } = useNotification();
     const navigate = useNavigate();
+    const { login } = getAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const data = await authApi.login({ email, password });
-            login(data.token!, data.email!);
+            const data = await login({ email, password });
+            loginUser(data.token!, data.email!);
             showNotification("Welcome back!", "success");
             navigate('/');
         } catch (err) { /* Handled globally */ }

@@ -7,7 +7,7 @@ vi.mock('jwt-decode', () => ({
 }));
 
 const TestAuth = () => {
-    const { isAuthenticated, user, login, logout } = useAuth();
+    const { isAuthenticated, user, loginUser: login, logout } = useAuth();
     return (
         <div>
             <div data-testid="auth-status">{isAuthenticated ? 'Logged In' : 'Logged Out'}</div>

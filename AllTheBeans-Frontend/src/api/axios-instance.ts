@@ -1,9 +1,9 @@
 import axios from 'axios';
 import eventBus from '../utils/eventBus';
 
-const baseURL = import.meta.env.PROD
-    ? '/api'
-    : 'http://localhost:5089/api';
+const baseURL = process.env.NODE_ENV === 'production'
+    ? ''
+    : 'http://localhost:5089';
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
     }
 });
 
-// 1. Inject Token
+// Inject Token
 axiosInstance.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token && config.headers) {
@@ -21,7 +21,7 @@ axiosInstance.interceptors.request.use((config) => {
     return config;
 });
 
-// 2. Global Error Handling
+// Global Error Handling
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {

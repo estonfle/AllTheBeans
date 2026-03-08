@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Typography, Paper, Box, Button, Grid, CircularProgress, Divider } from '@mui/material';
 import type { OrderResponseDto } from '../types/models';
-import { ordersApi } from '../api/orders';
+import { getOrders } from '../types/endpoints/orders/orders';
 import EditOrderDialog from '../components/EditOrderDialog';
 import { useNotification } from '../context/NotificationContext';
 
@@ -10,9 +10,10 @@ export default function OrdersPage() {
     const [loading, setLoading] = useState(true);
     const [editingOrder, setEditingOrder] = useState<OrderResponseDto | null>(null);
     const { showNotification } = useNotification();
+    const { getMyOrders, cancelOrder } = getOrders();
 
     const fetchOrders = () => {
-        ordersApi.getMyOrders()
+        getMyOrders()
             .then(setOrders)
             .finally(() => setLoading(false));
     };
@@ -24,7 +25,7 @@ export default function OrdersPage() {
     const handleCancel = async (id: number) => {
         if (!window.confirm("Are you sure you want to cancel this order?")) return;
         try {
-            await ordersApi.cancelOrder(id);
+            await cancelOrder(id);
             showNotification("Order cancelled", "info");
             fetchOrders();
         } catch (e) { /* handled globally */ }

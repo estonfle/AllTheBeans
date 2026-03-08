@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Grid, TextField, Box, Typography, CircularProgress, Pagination } from '@mui/material';
 import type { CoffeeBean } from '../types/models';
-import { beansApi } from '../api/beans';
+import { getBeans } from '../types/endpoints/beans/beans';
 import BeanCard from '../components/BeanCard';
 import BeanDetailDialog from '../components/BeanDetailDialog';
 
@@ -15,6 +15,8 @@ export default function HomePage() {
     const [loading, setLoading] = useState(true);
     const [selectedBean, setSelectedBean] = useState<CoffeeBean | null>(null);
 
+    const { getAllBeans, getBeanOfTheDay } = getBeans();
+
     // 2. Create a Ref to store the timer ID between renders
     const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -22,8 +24,8 @@ export default function HomePage() {
         const initFetch = async () => {
             try {
                 const [pagedData, botdData] = await Promise.all([
-                    beansApi.getAll({}),
-                    beansApi.getBotd()
+                    getAllBeans({}),
+                    getBeanOfTheDay()
                 ]);
                 setBeans(pagedData.items || []);
                 setTotalCount(pagedData.totalCount!);
@@ -42,7 +44,7 @@ export default function HomePage() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         try {
-            const data = await beansApi.getAll({ search, page: value });
+            const data = await getAllBeans({ search, page: value });
             setBeans(data.items || []);
             setTotalCount(data.totalCount!);
         } finally {
@@ -60,7 +62,7 @@ export default function HomePage() {
             setPage(1);
             setLoading(true);
             try {
-                const data = await beansApi.getAll({ search: val });
+                const data = await getAllBeans({ search: val });
                 setBeans(data.items || []);
                 setTotalCount(data.totalCount!);
             } finally {

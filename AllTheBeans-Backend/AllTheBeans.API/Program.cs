@@ -64,7 +64,13 @@ builder.Services.AddControllers(options =>
         new SlugifyParameterTransformer()));
 });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    // Add this line to force all query parameters to be camelCase
+    options.DescribeAllParametersInCamelCase(); 
+});
+
 builder.Services.AddCors(opt => opt.AddPolicy("AllowReact", p => 
     p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 

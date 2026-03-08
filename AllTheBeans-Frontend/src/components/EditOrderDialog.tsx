@@ -2,7 +2,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListIt
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 import type { OrderResponseDto, CreateOrderItemDto } from '../types/models';
-import { ordersApi } from '../api/orders';
+import { getOrders } from '../types/endpoints/orders/orders';
 import { useNotification } from '../context/NotificationContext';
 
 interface Props {
@@ -15,6 +15,8 @@ export default function EditOrderDialog({ order, onClose, onSuccess }: Props) {
     // We map the complex response to the simple request format for editing
     const [items, setItems] = useState<CreateOrderItemDto[]>([]);
     const { showNotification } = useNotification();
+
+    const { updateOrder } = getOrders();
 
     useEffect(() => {
         if (order) {
@@ -37,7 +39,7 @@ export default function EditOrderDialog({ order, onClose, onSuccess }: Props) {
             return;
         }
         try {
-            await ordersApi.updateOrder(order.orderId!, { items });
+            await updateOrder(order.orderId!, { items });
             showNotification("Order updated successfully", "success");
             onSuccess();
             onClose();

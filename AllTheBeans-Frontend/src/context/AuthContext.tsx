@@ -10,7 +10,7 @@ interface AuthContextType {
     user: User | null;
     token: string | null;
     isAuthenticated: boolean;
-    login: (token: string, email: string) => void;
+    loginUser: (token: string, email: string) => void;
     logout: () => void;
 }
 
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode; }) => {
         }
     }, [token]);
 
-    const login = (newToken: string, email: string) => {
+    const loginUser = (newToken: string, email: string) => {
         localStorage.setItem('token', newToken);
         setToken(newToken);
         const decoded: any = jwtDecode(newToken);
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode; }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, login, logout }}>
+        <AuthContext.Provider value={{ user, token, isAuthenticated: !!user, loginUser, logout }}>
             {children}
         </AuthContext.Provider>
     );

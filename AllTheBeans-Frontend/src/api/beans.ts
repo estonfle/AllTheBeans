@@ -1,10 +1,9 @@
 import axiosInstance from './axios-instance';
-import type { CoffeeBean } from '../types/models';
-import type { PagedResult, PaginationParams } from '../types/common';
+import type { CoffeeBean, GetAllBeansParams, CoffeeBeanPagedResultDto } from '../types/models';
 
 export const beansApi = {
-    getAll: async (params: PaginationParams = { search: '', page: 1, pageSize: 9 }) => {
-        const res = await axiosInstance.get<PagedResult<CoffeeBean>>('/beans', {
+    getAll: async (params: GetAllBeansParams = { search: '', page: 1, pageSize: 9 }) => {
+        const res = await axiosInstance.get<CoffeeBeanPagedResultDto>('/beans', {
             params: params
         });
         return res.data;

@@ -6,7 +6,7 @@
  */
 
 export type GetAllBeansParams = {
-Search?: string;
-Page?: number;
-PageSize?: number;
+search?: string;
+page?: number;
+pageSize?: number;
 };

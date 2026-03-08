@@ -12,6 +12,12 @@ export default defineConfig({
             client: 'axios', // or 'fetch' or 'vue-query'
             clean: true, // Clean the output directory before generating new files
             mock: true, // Enable mock generation
+            override: {
+                mutator: {
+                    path: 'src/api/mutator.ts', // <--- Path to the mutator which wraps the axiosInstance 
+                    name: 'customInstance',            // <--- The exported function name  
+                },
+            },
         },
     },
 });
