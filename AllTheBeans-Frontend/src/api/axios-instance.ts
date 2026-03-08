@@ -5,7 +5,7 @@ const baseURL = import.meta.env.PROD
     ? '/api'
     : 'http://localhost:5089/api';
 
-const API = axios.create({
+const axiosInstance = axios.create({
     baseURL: baseURL,
     headers: {
         'Content-Type': 'application/json'
@@ -13,16 +13,16 @@ const API = axios.create({
 });
 
 // 1. Inject Token
-API.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 });
 
 // 2. Global Error Handling
-API.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
         let message = "An unexpected error occurred.";
@@ -62,4 +62,4 @@ API.interceptors.response.use(
     }
 );
 
-export default API;
+export default axiosInstance;
