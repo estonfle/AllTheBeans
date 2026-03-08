@@ -16,30 +16,27 @@ import { customInstance } from '../../../api/mutator';
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
-export const getAuth = () => {
-  const register = (
+  export const getAuth = () => {
+const register = (
     registerDto: RegisterDto,
-    options?: SecondParameter<typeof customInstance<void>>,) => {
-    return customInstance<void>(
-      {
-        url: `/api/auth/register`, method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        data: registerDto
-      },
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/api/auth/register`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: registerDto
+    },
       options);
-  };
+    }
   const login = (
     loginDto: LoginDto,
-    options?: SecondParameter<typeof customInstance<AuthResponseDto>>,) => {
-    return customInstance<AuthResponseDto>(
-      {
-        url: `/api/auth/login`, method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        data: loginDto
-      },
+ options?: SecondParameter<typeof customInstance<AuthResponseDto>>,) => {
+      return customInstance<AuthResponseDto>(
+      {url: `/api/auth/login`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: loginDto
+    },
       options);
-  };
-  return { register, login };
-};
-export type RegisterResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAuth>['register']>>>;
-export type LoginResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAuth>['login']>>>;
+    }
+  return {register,login}};
+export type RegisterResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAuth>['register']>>>
+export type LoginResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAuth>['login']>>>

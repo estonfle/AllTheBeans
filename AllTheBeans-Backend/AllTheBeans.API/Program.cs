@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +63,10 @@ builder.Services.AddControllers(options =>
 {
     options.Conventions.Add(new RouteTokenTransformerConvention(
         new SlugifyParameterTransformer()));
+        
+    // This forces Swagger to ONLY generate 'application/json' responses.
+    // It prevents the 'text/plain' bug in Orval's MSW generator!
+    options.Filters.Add(new ProducesAttribute("application/json"));
 });
 builder.Services.AddEndpointsApiExplorer();
 

@@ -17,6 +17,11 @@ import type {
   RequestHandlerOptions
 } from 'msw';
 
+import type {
+  CoffeeBean,
+  CoffeeBeanPagedResultDto
+} from '../../models';
+
 
 export const getGetAllBeansResponseMock = (overrideResponse: Partial< CoffeeBeanPagedResultDto > = {}): CoffeeBeanPagedResultDto => ({items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), description: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), image: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), colour: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), country: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), cost: faker.helpers.arrayElement([faker.number.float({min: undefined, max: undefined, fractionDigits: 2}), undefined])})), undefined]), totalCount: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pageNumber: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), pageSize: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), ...overrideResponse})
 
@@ -28,11 +33,11 @@ export const getGetBeanOfTheDayResponseMock = (overrideResponse: Partial< Coffee
 export const getGetAllBeansMockHandler = (overrideResponse?: CoffeeBeanPagedResultDto | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<CoffeeBeanPagedResultDto> | CoffeeBeanPagedResultDto), options?: RequestHandlerOptions) => {
   return http.get('*/api/beans', async (info) => {await delay(1000);
   
-    return new HttpResponse(overrideResponse !== undefined
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetAllBeansResponseMock(),
+    : getGetAllBeansResponseMock()),
       { status: 200,
-        headers: { 'Content-Type': 'text/plain' }
+        headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
@@ -40,11 +45,11 @@ export const getGetAllBeansMockHandler = (overrideResponse?: CoffeeBeanPagedResu
 export const getGetBeanByIdMockHandler = (overrideResponse?: CoffeeBean | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<CoffeeBean> | CoffeeBean), options?: RequestHandlerOptions) => {
   return http.get('*/api/beans/:id', async (info) => {await delay(1000);
   
-    return new HttpResponse(overrideResponse !== undefined
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetBeanByIdResponseMock(),
+    : getGetBeanByIdResponseMock()),
       { status: 200,
-        headers: { 'Content-Type': 'text/plain' }
+        headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
@@ -52,11 +57,11 @@ export const getGetBeanByIdMockHandler = (overrideResponse?: CoffeeBean | ((info
 export const getGetBeanOfTheDayMockHandler = (overrideResponse?: CoffeeBean | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<CoffeeBean> | CoffeeBean), options?: RequestHandlerOptions) => {
   return http.get('*/api/beans/botd', async (info) => {await delay(1000);
   
-    return new HttpResponse(overrideResponse !== undefined
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetBeanOfTheDayResponseMock(),
+    : getGetBeanOfTheDayResponseMock()),
       { status: 200,
-        headers: { 'Content-Type': 'text/plain' }
+        headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }

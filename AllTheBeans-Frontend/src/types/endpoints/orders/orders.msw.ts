@@ -17,6 +17,10 @@ import type {
   RequestHandlerOptions
 } from 'msw';
 
+import type {
+  OrderResponseDto
+} from '../../models';
+
 
 export const getGetMyOrdersResponseMock = (): OrderResponseDto[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({orderId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), orderDate: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), totalCost: faker.helpers.arrayElement([faker.number.float({min: undefined, max: undefined, fractionDigits: 2}), undefined]), items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({beanId: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), beanName: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), image: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), quantity: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), unitPrice: faker.helpers.arrayElement([faker.number.float({min: undefined, max: undefined, fractionDigits: 2}), undefined])})), undefined])})))
 
@@ -24,11 +28,11 @@ export const getGetMyOrdersResponseMock = (): OrderResponseDto[] => (Array.from(
 export const getGetMyOrdersMockHandler = (overrideResponse?: OrderResponseDto[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<OrderResponseDto[]> | OrderResponseDto[]), options?: RequestHandlerOptions) => {
   return http.get('*/api/orders', async (info) => {await delay(1000);
   
-    return new HttpResponse(overrideResponse !== undefined
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetMyOrdersResponseMock(),
+    : getGetMyOrdersResponseMock()),
       { status: 200,
-        headers: { 'Content-Type': 'text/plain' }
+        headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }

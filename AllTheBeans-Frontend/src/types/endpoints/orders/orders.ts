@@ -16,51 +16,46 @@ import { customInstance } from '../../../api/mutator';
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
-export const getOrders = () => {
-  const getMyOrders = (
-
-    options?: SecondParameter<typeof customInstance<OrderResponseDto[]>>,) => {
-    return customInstance<OrderResponseDto[]>(
-      {
-        url: `/api/orders`, method: 'GET'
-      },
+  export const getOrders = () => {
+const getMyOrders = (
+    
+ options?: SecondParameter<typeof customInstance<OrderResponseDto[]>>,) => {
+      return customInstance<OrderResponseDto[]>(
+      {url: `/api/orders`, method: 'GET'
+    },
       options);
-  };
+    }
   const createOrder = (
     createOrderDto: CreateOrderDto,
-    options?: SecondParameter<typeof customInstance<void>>,) => {
-    return customInstance<void>(
-      {
-        url: `/api/orders`, method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        data: createOrderDto
-      },
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/api/orders`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createOrderDto
+    },
       options);
-  };
+    }
   const updateOrder = (
     id: number,
     updateOrderDto: UpdateOrderDto,
-    options?: SecondParameter<typeof customInstance<void>>,) => {
-    return customInstance<void>(
-      {
-        url: `/api/orders/${id}`, method: 'PUT',
-        headers: { 'Content-Type': 'application/json', },
-        data: updateOrderDto
-      },
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/api/orders/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateOrderDto
+    },
       options);
-  };
+    }
   const cancelOrder = (
     id: number,
-    options?: SecondParameter<typeof customInstance<void>>,) => {
-    return customInstance<void>(
-      {
-        url: `/api/orders/${id}`, method: 'DELETE'
-      },
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/api/orders/${id}`, method: 'DELETE'
+    },
       options);
-  };
-  return { getMyOrders, createOrder, updateOrder, cancelOrder };
-};
-export type GetMyOrdersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['getMyOrders']>>>;
-export type CreateOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['createOrder']>>>;
-export type UpdateOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['updateOrder']>>>;
-export type CancelOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['cancelOrder']>>>;
+    }
+  return {getMyOrders,createOrder,updateOrder,cancelOrder}};
+export type GetMyOrdersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['getMyOrders']>>>
+export type CreateOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['createOrder']>>>
+export type UpdateOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['updateOrder']>>>
+export type CancelOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOrders>['cancelOrder']>>>

@@ -17,6 +17,10 @@ import type {
   RequestHandlerOptions
 } from 'msw';
 
+import type {
+  AuthResponseDto
+} from '../../models';
+
 
 export const getLoginResponseMock = (overrideResponse: Partial< AuthResponseDto > = {}): AuthResponseDto => ({token: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), username: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), email: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), ...overrideResponse})
 
@@ -34,11 +38,11 @@ export const getRegisterMockHandler = (overrideResponse?: void | ((info: Paramet
 export const getLoginMockHandler = (overrideResponse?: AuthResponseDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<AuthResponseDto> | AuthResponseDto), options?: RequestHandlerOptions) => {
   return http.post('*/api/auth/login', async (info) => {await delay(1000);
   
-    return new HttpResponse(overrideResponse !== undefined
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getLoginResponseMock(),
+    : getLoginResponseMock()),
       { status: 200,
-        headers: { 'Content-Type': 'text/plain' }
+        headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
