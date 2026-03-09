@@ -67,6 +67,9 @@ builder.Services.AddControllers(options =>
     // This forces Swagger to ONLY generate 'application/json' responses.
     // It prevents the 'text/plain' bug in Orval's MSW generator!
     options.Filters.Add(new ProducesAttribute("application/json"));
+
+    // Forces the API to only ACCEPT application/json (Cleans up the requestBody in Swagger!)
+    options.Filters.Add(new ConsumesAttribute("application/json"));
 });
 builder.Services.AddEndpointsApiExplorer();
 
