@@ -16,33 +16,37 @@ import { customInstance } from '../../../api/mutator';
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
-  export const getBeans = () => {
-const getAllBeans = (
+export const getBeans = () => {
+  const getAllBeans = (
     params?: GetAllBeansParams,
- options?: SecondParameter<typeof customInstance<CoffeeBeanPagedResultDto>>,) => {
-      return customInstance<CoffeeBeanPagedResultDto>(
-      {url: `/api/beans`, method: 'GET',
+    options?: SecondParameter<typeof customInstance<CoffeeBeanPagedResultDto>>,) => {
+    return customInstance<CoffeeBeanPagedResultDto>(
+      {
+        url: `/api/beans`, method: 'GET',
         params
-    },
+      },
       options);
-    }
+  };
   const getBeanById = (
     id: number,
- options?: SecondParameter<typeof customInstance<CoffeeBean>>,) => {
-      return customInstance<CoffeeBean>(
-      {url: `/api/beans/${id}`, method: 'GET'
-    },
+    options?: SecondParameter<typeof customInstance<CoffeeBean>>,) => {
+    return customInstance<CoffeeBean>(
+      {
+        url: `/api/beans/${id}`, method: 'GET'
+      },
       options);
-    }
+  };
   const getBeanOfTheDay = (
-    
- options?: SecondParameter<typeof customInstance<CoffeeBean>>,) => {
-      return customInstance<CoffeeBean>(
-      {url: `/api/beans/botd`, method: 'GET'
-    },
+
+    options?: SecondParameter<typeof customInstance<CoffeeBean>>,) => {
+    return customInstance<CoffeeBean>(
+      {
+        url: `/api/beans/botd`, method: 'GET'
+      },
       options);
-    }
-  return {getAllBeans,getBeanById,getBeanOfTheDay}};
-export type GetAllBeansResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getAllBeans']>>>
-export type GetBeanByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getBeanById']>>>
-export type GetBeanOfTheDayResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getBeanOfTheDay']>>>
+  };
+  return { getAllBeans, getBeanById, getBeanOfTheDay };
+};
+export type GetAllBeansResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getAllBeans']>>>;
+export type GetBeanByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getBeanById']>>>;
+export type GetBeanOfTheDayResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getBeans>['getBeanOfTheDay']>>>;

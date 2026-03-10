@@ -50,7 +50,12 @@ public class AuthService : IAuthService
 
         var token = GenerateJwtToken(user);
         
-        return new AuthResponseDto(token, user.UserName!, user.Email!);
+        return new AuthResponseDto
+        {
+            Token = token, 
+            Username = user.UserName!, 
+            Email = user.Email!
+        };
     }
 
     private string GenerateJwtToken(User user)

@@ -6,10 +6,10 @@
  */
 
 export interface AuthResponseDto {
-  /** @nullable */
-  token?: string | null;
-  /** @nullable */
-  username?: string | null;
-  /** @nullable */
-  email?: string | null;
+  /** @minLength 1 */
+  token: string;
+  /** @minLength 1 */
+  username: string;
+  /** @minLength 1 */
+  email: string;
 }

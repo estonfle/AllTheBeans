@@ -22,7 +22,7 @@ import type {
 } from '../../models';
 
 
-export const getLoginResponseMock = (overrideResponse: Partial< AuthResponseDto > = {}): AuthResponseDto => ({token: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), username: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), email: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), ...overrideResponse})
+export const getLoginResponseMock = (overrideResponse: Partial< AuthResponseDto > = {}): AuthResponseDto => ({token: faker.string.alpha({length: {min: 1, max: 20}}), username: faker.string.alpha({length: {min: 1, max: 20}}), email: faker.string.alpha({length: {min: 1, max: 20}}), ...overrideResponse})
 
 
 export const getRegisterMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
