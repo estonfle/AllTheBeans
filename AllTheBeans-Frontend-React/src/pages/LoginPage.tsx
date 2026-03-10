@@ -4,7 +4,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { getAuth } from '../types/endpoints/auth/auth';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "node_modules/react-i18next";
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');

@@ -4,7 +4,7 @@ import type { OrderResponseDto } from '../types/models';
 import { getOrders } from '../types/endpoints/orders/orders';
 import EditOrderDialog from '../components/EditOrderDialog';
 import { useNotification } from '../context/NotificationContext';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "node_modules/react-i18next";
 
 export default function OrdersPage() {
     const [orders, setOrders] = useState<OrderResponseDto[]>([]);

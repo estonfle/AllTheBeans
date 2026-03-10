@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import type { OrderResponseDto, CreateOrderItemDto } from '../types/models';
 import { getOrders } from '../types/endpoints/orders/orders';
 import { useNotification } from '../context/NotificationContext';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "node_modules/react-i18next";
 
 interface Props {
     order: OrderResponseDto | null;
