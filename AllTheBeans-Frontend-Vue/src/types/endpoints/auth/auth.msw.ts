@@ -47,4 +47,5 @@ export const getLoginMockHandler = (overrideResponse?: AuthResponseDto | ((info:
 }
 export const getAuthMock = () => [
   getRegisterMockHandler(),
-  getLoginMockHandler()]
+  getLoginMockHandler()
+]

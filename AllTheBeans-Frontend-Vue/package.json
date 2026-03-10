@@ -8,17 +8,23 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "generate-types": "orval" 
   },
   "dependencies": {
+    "@tanstack/vue-query": "^5.92.9",
+    "axios": "^1.13.6",
     "vue": "^3.5.29"
   },
   "devDependencies": {
+    "@orval/core": "^8.5.3",
+    "@orval/mock": "^8.5.3",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.11.0",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/tsconfig": "^0.8.1",
     "npm-run-all2": "^8.0.4",
+    "orval": "^8.5.3",
     "typescript": "~5.9.3",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.6",

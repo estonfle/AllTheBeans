@@ -67,4 +67,5 @@ export const getGetBeanOfTheDayMockHandler = (overrideResponse?: CoffeeBean | ((
 export const getBeansMock = () => [
   getGetAllBeansMockHandler(),
   getGetBeanByIdMockHandler(),
-  getGetBeanOfTheDayMockHandler()]
+  getGetBeanOfTheDayMockHandler()
+]

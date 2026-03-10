@@ -1,74 +1,92 @@
 <template>
   <div class="app-container">
-    <h2>My Items</h2>
+    <header class="header">
+      <h2>Beans Dashboard</h2>
+      
+      <!-- 
+        We can globally invalidate the query cache to force 
+        all components using 'getItems' to refetch in the background. 
+      -->
+      <button 
+        @click="fetchItems" 
+        :disabled="isRefreshing" 
+        class="reload-btn"
+      >
+        {{ isRefreshing ? 'Refreshing...' : 'Refresh Data' }}
+      </button>
+    </header>
     
-    <!-- Show the spinner if isLoading is true -->
-    <LoadingSpinner v-if="isLoading" />
-    
-    <!-- Show the item list once loading is complete -->
-    <ItemList v-else :items="myItems" />
-    
-    <!-- A button to trigger the reload for testing purposes -->
-    <button @click="fetchItems" :disabled="isLoading" class="reload-btn">
-      Reload Data
-    </button>
+    <!-- 
+      The ItemList component is completely self-sufficient now. 
+      It fetches and manages its own server state!
+    -->
+    <ItemList style="margin: 40px 0 40px 0;"/>
+    <hr style="border: 1px solid red; height: 2px; background-color: red; width: 100%;">   
+    <ItemList style="margin: 40px 0 40px 0;"/>
+    <hr style="border: 1px solid red; height: 2px; background-color: red; width: 100%;"> 
+    <ItemList style="margin: 40px 0 40px 0;"/>
+    <hr style="border: 1px solid red; height: 2px; background-color: red; width: 100%;"> 
+    <ItemList  style="margin: 40px 0 40px 0;"/> <!-- Multiple instances will share the same cache and update together! -->
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import LoadingSpinner from './components/LoadingSpinner.vue';
+import { useQueryClient } from '@tanstack/vue-query';
 import ItemList from './components/ItemList.vue';
+import { getGetAllBeansQueryKey } from '@/types/endpoints/beans/beans'; // Orval also generates query key helpers!
 
-const isLoading = ref(true);
-const myItems = ref([]);
+const queryClient = useQueryClient();
+const isRefreshing = ref(false);
 
-// Function to simulate fetching data from an API
-const fetchItems = () => {
-  isLoading.value = true;
-  myItems.value =[];
+const fetchItems = async () => {
+  isRefreshing.value = true;
   
-  // Simulate network delay
-  setTimeout(() => {
-    myItems.value =[
-      { id: 1, name: 'Vue.js', description: 'The Progressive JavaScript Framework' },
-      { id: 2, name: 'Vite', description: 'Next Generation Frontend Tooling' },
-      { id: 3, name: 'Pinia', description: 'The intuitive store for Vue' },
-    ];
-    isLoading.value = false;
-  }, 2000);
+  // Enterprise Pattern: Invalidate the cache.
+  // This tells TanStack Query "Hey, the data for 'items' is stale."
+  // Any component currently displaying 'items' will automatically 
+  // refetch in the background via Axios, without unmounting!
+  await queryClient.invalidateQueries({
+    queryKey: getGetAllBeansQueryKey() 
+  });
+  
+  isRefreshing.value = false;
 };
-
-// Fetch items when the component mounts
-onMounted(() => {
-  fetchItems();
-});
 </script>
 
 <style scoped>
 .app-container {
-  max-width: 500px;
+  max-width: 600px;
   margin: 40px auto;
   font-family: sans-serif;
 }
-
-h2 {
-  color: #333;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
 }
-
+h2 {
+  color: #0f172a;
+  margin: 0;
+}
 .reload-btn {
-  margin-top: 20px;
-  padding: 10px 16px;
-  background-color: #42b883;
+  padding: 8px 16px;
+  background-color: #3b82f6;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  transition: background-color 0.2s;
 }
-
+.reload-btn:hover:not(:disabled) {
+  background-color: #2563eb;
+}
 .reload-btn:disabled {
-  background-color: #a7d8c2;
+  background-color: #93c5fd;
   cursor: not-allowed;
 }
 </style>

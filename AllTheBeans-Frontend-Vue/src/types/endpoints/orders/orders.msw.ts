@@ -69,4 +69,5 @@ export const getOrdersMock = () => [
   getGetMyOrdersMockHandler(),
   getCreateOrderMockHandler(),
   getUpdateOrderMockHandler(),
-  getCancelOrderMockHandler()]
+  getCancelOrderMockHandler()
+]
