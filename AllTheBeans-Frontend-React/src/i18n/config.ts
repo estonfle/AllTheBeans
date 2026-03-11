@@ -11,8 +11,10 @@ i18n
         fallbackLng: 'en',
 
         // Define namespaces
-        ns: ['auth'],
-        defaultNS: 'auth',
+        ns: ['common'],
+        defaultNS: 'common',
+        // Specify the default namespace for fallbacks
+        fallbackNS: 'common',
 
         backend: {
             loadPath: '/locales/{{lng}}/{{ns}}.json',

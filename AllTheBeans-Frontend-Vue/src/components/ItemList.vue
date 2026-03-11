@@ -1,3 +1,23 @@
+<script setup lang="ts">
+// 1. Import the auto-generated Vue Query hook from Orval
+// The path depends on your swagger tags and orval.config.ts setup
+import { useGetAllBeans } from '@/types/endpoints/beans/beans'; 
+import LoadingSpinner from './LoadingSpinner.vue';
+import { computed } from 'vue';
+
+// 2. Execute the hook! 
+// This automatically triggers the Axios call, caches the result, 
+// and provides reactive variables for your template.
+const { 
+  data, 
+  isLoading, 
+  isError, 
+  error 
+} = useGetAllBeans();
+
+const items = computed(() => data.value?.items);
+</script>
+
 <template>
   <div class="item-list-container">
     <div v-if="isLoading" class="loading-state">
@@ -21,26 +41,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-// 1. Import the auto-generated Vue Query hook from Orval
-// The path depends on your swagger tags and orval.config.ts setup
-import { useGetAllBeans } from '@/types/endpoints/beans/beans'; 
-import LoadingSpinner from './LoadingSpinner.vue';
-import { computed } from 'vue';
-
-// 2. Execute the hook! 
-// This automatically triggers the Axios call, caches the result, 
-// and provides reactive variables for your template.
-const { 
-  data, 
-  isLoading, 
-  isError, 
-  error 
-} = useGetAllBeans();
-
-const items = computed(() => data.value?.items);
-</script>
 
 <style scoped>
 .item-list-container {

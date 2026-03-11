@@ -51,8 +51,8 @@ export default function OrdersPage() {
                                 </Typography>
                             </Typography>
                             <Box>
-                                <Button size="small" sx={{ mr: 1 }} onClick={() => setEditingOrder(order)}>{t('modify')}</Button>
-                                <Button size="small" color="error" onClick={() => handleCancel(order.orderId!)}>{t('cancel')}</Button>
+                                {/* <Button size="small" sx={{ mr: 1 }} onClick={() => setEditingOrder(order)}>{t('buttons.modify')}</Button>
+                                <Button size="small" color="error" onClick={() => handleCancel(order.orderId!)}>{t('buttons.cancel')}</Button> */}
                             </Box>
                         </Box>
                         <Divider sx={{ mb: 2 }} />

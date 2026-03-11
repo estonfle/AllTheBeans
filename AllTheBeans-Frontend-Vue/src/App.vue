@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useQueryClient } from '@tanstack/vue-query';
+import ItemList from './components/ItemList.vue';
+import { getGetAllBeansQueryKey } from '@/types/endpoints/beans/beans'; // Orval also generates query key helpers!
+
+const queryClient = useQueryClient();
+const isRefreshing = ref(false);
+
+const fetchItems = async () => {
+  isRefreshing.value = true;
+  
+  // Enterprise Pattern: Invalidate the cache.
+  // This tells TanStack Query "Hey, the data for 'items' is stale."
+  // Any component currently displaying 'items' will automatically 
+  // refetch in the background via Axios, without unmounting!
+  await queryClient.invalidateQueries({
+    queryKey: getGetAllBeansQueryKey() 
+  });
+  
+  isRefreshing.value = false;
+};
+</script>
+
 <template>
   <div class="app-container">
     <header class="header">
@@ -29,30 +53,6 @@
     <ItemList  style="margin: 40px 0 40px 0;"/> <!-- Multiple instances will share the same cache and update together! -->
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useQueryClient } from '@tanstack/vue-query';
-import ItemList from './components/ItemList.vue';
-import { getGetAllBeansQueryKey } from '@/types/endpoints/beans/beans'; // Orval also generates query key helpers!
-
-const queryClient = useQueryClient();
-const isRefreshing = ref(false);
-
-const fetchItems = async () => {
-  isRefreshing.value = true;
-  
-  // Enterprise Pattern: Invalidate the cache.
-  // This tells TanStack Query "Hey, the data for 'items' is stale."
-  // Any component currently displaying 'items' will automatically 
-  // refetch in the background via Axios, without unmounting!
-  await queryClient.invalidateQueries({
-    queryKey: getGetAllBeansQueryKey() 
-  });
-  
-  isRefreshing.value = false;
-};
-</script>
 
 <style scoped>
 .app-container {

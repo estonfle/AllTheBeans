@@ -1,6 +1,9 @@
 {
   "buttons": {
     "save": "Save Changes",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "modify": "Modify",
+    "signin": "Sign In",
+    "register": "Register"
   }
 }

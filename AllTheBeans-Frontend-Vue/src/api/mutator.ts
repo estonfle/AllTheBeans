@@ -9,17 +9,6 @@ export const customAxiosInstance = async <T>(
     return axiosInstance({
         ...config,
         ...options,
-    }).then((response) => response.data);
+    }).then(({ data }) => data);
 };
 
-// export const customAxiosInstance = async <T>(
-//   config: AxiosRequestConfig,
-//   options?: AxiosRequestConfig
-// ): Promise<T> => {
-//   const promise = axiosInstance({
-//     ...config,
-//     ...options,
-//   }).then(({ data }) => data);
-
-//   return promise;
-// };

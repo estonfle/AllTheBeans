@@ -4,8 +4,6 @@
     "yourOrders": "Your Orders",
     "noOrdersFound.": "No orders found.",
     "orderId": "Order #",
-    "modify": "Modify",
-    "cancel": "Cancel",
     "qty": "Qty:",
     "totalPrice": "Total: £"
 }
