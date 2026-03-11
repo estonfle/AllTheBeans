@@ -1,4 +1,4 @@
-import axiosInstance from './axios-instance';
+import axiosInstance from './axios-client';
 import type { LoginDto, RegisterDto, AuthResponseDto } from '../types/models';
 
 export const authApi = {

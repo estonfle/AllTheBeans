@@ -1,4 +1,4 @@
-import axiosInstance from './axios-instance';
+import axiosInstance from './axios-client';
 import type { CoffeeBean, GetAllBeansParams, CoffeeBeanPagedResultDto } from '../types/models';
 
 export const beansApi = {
