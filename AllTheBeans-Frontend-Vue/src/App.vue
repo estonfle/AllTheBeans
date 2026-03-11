@@ -2,7 +2,11 @@
 import { ref } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
 import ItemList from './components/ItemList.vue';
-import { getGetAllBeansQueryKey } from '@/types/endpoints/beans/beans'; // Orval also generates query key helpers!
+import { getGetAllBeansQueryKey } from '@/types/endpoints/beans/beans'; 
+import { useI18n } from 'vue-i18n';
+import type { MessageSchema } from './i18n/config'; 
+
+const { t } = useI18n<{ message: MessageSchema }>();
 
 const queryClient = useQueryClient();
 const isRefreshing = ref(false);
@@ -25,7 +29,7 @@ const fetchItems = async () => {
 <template>
   <div class="app-container">
     <header class="header">
-      <h2>Beans Dashboard</h2>
+      <h2>{{ t('dashboard') }}</h2>
       
       <!-- 
         We can globally invalidate the query cache to force 
@@ -36,7 +40,7 @@ const fetchItems = async () => {
         :disabled="isRefreshing" 
         class="reload-btn"
       >
-        {{ isRefreshing ? 'Refreshing...' : 'Refresh Data' }}
+        {{ isRefreshing ? t('buttons.refreshing') : t('buttons.refreshData') }}
       </button>
     </header>
     

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import type { OrderResponseDto, CreateOrderItemDto } from '../types/models';
 import { getOrders } from '../types/endpoints/orders/orders';
 import { useNotification } from '../context/NotificationContext';
-import { useTranslation } from "node_modules/react-i18next";
 
 interface Props {
     order: OrderResponseDto | null;
@@ -16,7 +15,6 @@ export default function EditOrderDialog({ order, onClose, onSuccess }: Props) {
     // We map the complex response to the simple request format for editing
     const [items, setItems] = useState<CreateOrderItemDto[]>([]);
     const { showNotification } = useNotification();
-    const { t } = useTranslation('common');
 
     const { updateOrder } = getOrders();
 
@@ -83,7 +81,7 @@ export default function EditOrderDialog({ order, onClose, onSuccess }: Props) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button variant="contained" onClick={handleSave}>{t('buttons.save')}</Button>
+                <Button variant="contained" onClick={handleSave}>Save</Button>
             </DialogActions>
         </Dialog>
     );

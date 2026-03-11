@@ -1,9 +1,0 @@
-{
-    "cancelOrderConfirmation": "Are you sure you want to cancel this order?",
-    "orderCancelled": "Order cancelled",
-    "yourOrders": "Your Orders",
-    "noOrdersFound.": "No orders found.",
-    "orderId": "Order #",
-    "qty": "Qty:",
-    "totalPrice": "Total: £"
-}

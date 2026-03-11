@@ -4,6 +4,10 @@
 import { useGetAllBeans } from '@/types/endpoints/beans/beans'; 
 import LoadingSpinner from './LoadingSpinner.vue';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import type { MessageSchema } from '../i18n/config'; 
+
+const { t } = useI18n<{ message: MessageSchema }>();
 
 // 2. Execute the hook! 
 // This automatically triggers the Axios call, caches the result, 
@@ -22,11 +26,11 @@ const items = computed(() => data.value?.items);
   <div class="item-list-container">
     <div v-if="isLoading" class="loading-state">
       <LoadingSpinner />
-      <p>Loading items...</p>
+      <p>{{ t('loading') }}</p>
     </div>
     
     <div v-else-if="isError" class="error-state">
-      Failed to load items: {{ (error as Error).message }}
+      {{ t('failedToLoad')}} {{ (error as Error).message }}
     </div>
 
     <ul v-else-if="items && items.length > 0" class="item-list">
@@ -37,7 +41,7 @@ const items = computed(() => data.value?.items);
     </ul>
     
     <div v-else class="empty-state">
-      No items found.
+      {{ t('notFound.') }}
     </div>
   </div>
 </template>

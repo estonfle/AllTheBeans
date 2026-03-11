@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Container, TextField, Button, Typography, Paper, Box, Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { getAuth } from '@/types/endpoints/auth/auth';
-import { useNotification } from '@/context/NotificationContext';
-import { useTranslation } from "node_modules/react-i18next";
+import { getAuth } from '../types/endpoints/auth/auth';
+import { useNotification } from '../context/NotificationContext';
 
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
@@ -12,13 +11,12 @@ export default function RegisterPage() {
     const { showNotification } = useNotification();
     const navigate = useNavigate();
     const { register } = getAuth();
-    const { t } = useTranslation('auth');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             await register({ email, username, password });
-            showNotification(t('successfulRegistration'), "success");
+            showNotification('Registration successful! Please login.', "success");
             navigate('/login');
         } catch (err) { /* Handled globally */ }
     };
@@ -26,13 +24,13 @@ export default function RegisterPage() {
     return (
         <Container maxWidth="xs" sx={{ mt: 8 }}>
             <Paper sx={{ p: 4 }}>
-                {/* <Typography variant="h5" align="center" gutterBottom>{t('buttons.register')}</Typography> */}
+                <Typography variant="h5" align="center" gutterBottom>Register</Typography>
                 <Box component="form" onSubmit={handleSubmit}>
-                    <TextField fullWidth label={t('email')} type="email" margin="normal" required value={email} onChange={e => setEmail(e.target.value)} />
-                    <TextField fullWidth label={t('userName')} type="text" margin="normal" required value={username} onChange={e => setUsername(e.target.value)} />
-                    <TextField fullWidth label={t('password')} type="password" margin="normal" required value={password} onChange={e => setPassword(e.target.value)} />
-                    {/* <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>{t('buttons.register')}</Button> */}
-                    <Link component={RouterLink} to="/login" variant="body2">{t('alreadyHaveAccount')}</Link>
+                    <TextField fullWidth label="Email" type="email" margin="normal" required value={email} onChange={e => setEmail(e.target.value)} />
+                    <TextField fullWidth label="Username" type="text" margin="normal" required value={username} onChange={e => setUsername(e.target.value)} />
+                    <TextField fullWidth label="Password" type="password" margin="normal" required value={password} onChange={e => setPassword(e.target.value)} />
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>Register</Button>
+                    <Link component={RouterLink} to="/login" variant="body2">Already have an account? Login</Link>
                 </Box>
             </Paper>
         </Container>

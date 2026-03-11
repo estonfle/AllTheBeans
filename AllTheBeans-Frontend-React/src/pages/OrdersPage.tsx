@@ -4,7 +4,6 @@ import type { OrderResponseDto } from '../types/models';
 import { getOrders } from '../types/endpoints/orders/orders';
 import EditOrderDialog from '../components/EditOrderDialog';
 import { useNotification } from '../context/NotificationContext';
-import { useTranslation } from "node_modules/react-i18next";
 
 export default function OrdersPage() {
     const [orders, setOrders] = useState<OrderResponseDto[]>([]);
@@ -12,7 +11,6 @@ export default function OrdersPage() {
     const [editingOrder, setEditingOrder] = useState<OrderResponseDto | null>(null);
     const { showNotification } = useNotification();
     const { getMyOrders, cancelOrder } = getOrders();
-    const { t } = useTranslation('order');
 
     const fetchOrders = () => {
         getMyOrders()
@@ -25,10 +23,10 @@ export default function OrdersPage() {
     }, []);
 
     const handleCancel = async (id: number) => {
-        if (!window.confirm(t('cancelOrderConfirmation'))) return;
+        if (!window.confirm('Are you sure you want to cancel this order?')) return;
         try {
             await cancelOrder(id);
-            showNotification(t('orderCancelled'), "info");
+            showNotification('Order cancelled', "info");
             fetchOrders();
         } catch (e) { /* handled globally */ }
     };
@@ -37,22 +35,22 @@ export default function OrdersPage() {
 
     return (
         <>
-            <Typography variant="h4" gutterBottom>{t('yourOrders')}</Typography>
-            {orders.length === 0 && <Typography>{t('noOrdersFound.')}</Typography>}
+            <Typography variant="h4" gutterBottom>Your Orders</Typography>
+            {orders.length === 0 && <Typography>No orders found.</Typography>}
 
             <Box display="flex" flexDirection="column" gap={3}>
                 {orders.map(order => (
                     <Paper key={order.orderId} sx={{ p: 3 }}>
                         <Box display="flex" justifyContent="space-between" mb={2} flexWrap="wrap">
                             <Typography variant="h6">
-                                {t('orderId')} {order.orderId}
+                                Order #{order.orderId}
                                 <Typography component="span" variant="body2" color="text.secondary" sx={{ ml: 2 }}>
                                     {new Date(order.orderDate!).toLocaleDateString()}
                                 </Typography>
                             </Typography>
                             <Box>
-                                {/* <Button size="small" sx={{ mr: 1 }} onClick={() => setEditingOrder(order)}>{t('buttons.modify')}</Button>
-                                <Button size="small" color="error" onClick={() => handleCancel(order.orderId!)}>{t('buttons.cancel')}</Button> */}
+                                <Button size="small" sx={{ mr: 1 }} onClick={() => setEditingOrder(order)}>Modify</Button>
+                                <Button size="small" color="error" onClick={() => handleCancel(order.orderId!)}>Cancel</Button>
                             </Box>
                         </Box>
                         <Divider sx={{ mb: 2 }} />
@@ -64,14 +62,14 @@ export default function OrdersPage() {
                                         <img src={item.image!} alt={item.beanName!} style={{ width: 50, height: 50, borderRadius: 4, objectFit: 'cover' }} />
                                         <Box>
                                             <Typography variant="subtitle2">{item.beanName}</Typography>
-                                            <Typography variant="caption">{t('qty')} {item.quantity} x £{item.unitPrice}</Typography>
+                                            <Typography variant="caption">Qty {item.quantity} x £{item.unitPrice}</Typography>
                                         </Box>
                                     </Box>
                                 </Grid>
                             ))}
                         </Grid>
                         <Box mt={2} textAlign="right">
-                            <Typography variant="h6" color="primary">{t('totalPrice')}{order.totalCost!.toFixed(2)}</Typography>
+                            <Typography variant="h6" color="primary">Total: £{order.totalCost!.toFixed(2)}</Typography>
                         </Box>
                     </Paper>
                 ))}

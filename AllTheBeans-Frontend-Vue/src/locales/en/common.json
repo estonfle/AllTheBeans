@@ -1,0 +1,29 @@
+{
+  "buttons": {
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "modify": "Modify",
+    "signin": "Sign In",
+    "register": "Register",
+    "refreshing": "Refreshing...",
+    "refreshData": "Refresh Data"
+  },
+    "email": "Email",
+    "password": "Password",
+    "dontHaveAccount": "Don't have an account? Register",
+    "userName": "Username",
+    "alreadyHaveAccount": "Already have an account? Login",
+    "successfulRegistration": "Registration successful! Please login.",
+    "welcomeBack": "Welcome back!",
+    "cancelOrderConfirmation": "Are you sure you want to cancel this order?",
+    "orderCancelled": "Order cancelled",
+    "yourOrders": "Your Orders",
+    "noOrdersFound.": "No orders found.",
+    "orderId": "Order #",
+    "qty": "Qty:",
+    "totalPrice": "Total: £",
+    "loading": "Loading items...",
+    "failedToLoad": "Failed to load items:",
+    "notFound.": "No items found.",
+    "dashboard": "Beans Dashboard"
+}
