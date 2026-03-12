@@ -41,25 +41,26 @@ const onFetchClick = () => {
   flex-direction: column;
   gap: 16px;
   align-items: flex-start;
-  margin: 20px;
+  /* margin: 20px; */
 }
 
 button {
   padding: 8px 16px;
   cursor: pointer;
+  border-radius: 8px;
 }
 
 /* Styling for the box that appears when text exists */
 .message-box {
   padding: 16px;
-  border: 2px solid #2563eb; /* Vue Green */
+  border: 2px solid black; /* Vue Green */
   border-radius: 8px;
-  background-color: #3b82f6;
-  color: white;
+  background-color: white;
+  color: black;
   font-weight: bold;
 }
 
-.message-box:hover {
-  background-color: #2563eb;
+button:hover {
+  background-color: lightgray;
 }
 </style>

@@ -31,7 +31,7 @@ const fetchItems = async () => {
   <div class="app-container">
     <header class="header">
       <h2>{{ t('dashboard') }}</h2>
-
+      
       <GreetingFetcher />
       
       <button 
@@ -63,13 +63,12 @@ const fetchItems = async () => {
   margin: 40px auto;
   font-family: sans-serif;
 }
-.header {
+ .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
+  flex-direction: column; /* This forces the elements to stack vertically */
+  align-items: flex-start; /* Aligns items to the left (use 'center' to center them) */
+  gap: 16px; /* Adds space between each line */
+  margin-bottom: 24px; /* Optional: adds space below the header */
 }
 h2 {
   color: #0f172a;
