@@ -11,6 +11,7 @@ export * from './coffeeBeanPagedResultDto';
 export * from './createOrderDto';
 export * from './createOrderItemDto';
 export * from './getAllBeansParams';
+export * from './greetingMessage';
 export * from './loginDto';
 export * from './orderItemResponseDto';
 export * from './orderResponseDto';

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// 1. Import the auto-generated Vue Query hook from Orval
-// The path depends on your swagger tags and orval.config.ts setup
 import { useGetAllBeans } from '@/types/endpoints/beans/beans'; 
 import LoadingSpinner from './LoadingSpinner.vue';
 import { computed } from 'vue';
@@ -11,7 +9,7 @@ const { t } = useI18n<{ message: MessageSchema }>();
 
 // 2. Execute the hook! 
 // This automatically triggers the Axios call, caches the result, 
-// and provides reactive variables for your template.
+// and provides reactive variables for the template.
 const { 
   data, 
   isLoading, 

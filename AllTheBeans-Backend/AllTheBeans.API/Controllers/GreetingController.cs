@@ -14,8 +14,13 @@ public class GreetingController : ControllerBase
         _localizer = localizer;
     }
 
+    public class GreetingMessage
+    {
+        public string Message { get; set; } = string.Empty;
+    }
+
     [HttpGet(Name = "greeting")]
-    public async Task<ActionResult> Get()
+    public ActionResult<GreetingMessage> Get()
     {
         // This will look for a key called "WelcomeMessage" in the .resx file
         var message = _localizer[SharedResource.WelcomeMessage].Value;

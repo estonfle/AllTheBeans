@@ -1,36 +1,29 @@
-<!-- src/components/GreetingFetcher.vue -->
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
-import axiosClient from '../api/axios-client';
+import {useGreeting} from '@/types/endpoints/greeting/greeting'; 
 
-// Define the fetch function
-const fetchGreeting = async (): Promise<string> => {
-  const response = await axiosClient.get('/api/greeting');
-  return response.data.message; // Assuming API returns { message: "..." }
-};
-
-// Setup Vue Query
-const { data: greetingMessage, isFetching, refetch } = useQuery({
-  queryKey: ['greeting'],
-  queryFn: fetchGreeting,
-  enabled: false, // Prevents fetching automatically when component mounts
+const { 
+  data, 
+  isFetching,
+  refetch
+} = useGreeting({
+  query: {
+    enabled: false 
+  }
 });
 
-// Button click handler
-const onFetchClick = () => {
-  refetch();
+const fetchGreeting = async () => {
+  await refetch();
 };
 </script>
 
 <template>
   <div class="greeting-container">
-    <button @click="onFetchClick" :disabled="isFetching">
+    <button @click="fetchGreeting" :disabled="isFetching">
       {{ isFetching ? 'Fetching...' : 'Get Greeting' }}
     </button>
 
-    <!-- The box only renders if greetingMessage has a value -->
-    <div v-if="greetingMessage" class="message-box">
-      {{ greetingMessage }}
+    <div v-if="data" class="message-box">
+      {{ data.message }}
     </div>
   </div>
 </template>
@@ -41,7 +34,6 @@ const onFetchClick = () => {
   flex-direction: column;
   gap: 16px;
   align-items: flex-start;
-  /* margin: 20px; */
 }
 
 button {
@@ -50,7 +42,6 @@ button {
   border-radius: 8px;
 }
 
-/* Styling for the box that appears when text exists */
 .message-box {
   padding: 16px;
   border: 2px solid black; /* Vue Green */
