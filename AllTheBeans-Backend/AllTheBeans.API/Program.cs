@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 1. Add Localisation services to the container
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -70,7 +73,10 @@ builder.Services.AddControllers(options =>
 
     // Forces the API to only ACCEPT application/json (Cleans up the requestBody in Swagger!)
     options.Filters.Add(new ConsumesAttribute("application/json"));
-});
+})
+// Optional: Localise built-in DataAnnotations (e.g. [Required],[MaxLength])
+    .AddDataAnnotationsLocalization(); 
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
@@ -86,6 +92,12 @@ var app = builder.Build();
 
 await SeedData.Initialize(app.Services);
 
+// 2. Configure Request Localisation
+var supportedCultures = new[] { "en-GB", "en" };
+
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("en-GB"); // Make English UK the default
+
 app.UseExceptionHandler(); 
 
 if (app.Environment.IsDevelopment())
@@ -95,6 +107,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowReact");
+
+app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthentication(); 
 app.UseAuthorization();

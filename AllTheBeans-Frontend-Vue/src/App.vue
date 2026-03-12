@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useQueryClient } from '@tanstack/vue-query';
 import ItemList from './components/ItemList.vue';
+import GreetingFetcher from './components/GreetingFetcher.vue';
 import { getGetAllBeansQueryKey } from '@/types/endpoints/beans/beans'; 
 import { useI18n } from 'vue-i18n';
 import type { MessageSchema } from './i18n/config'; 
@@ -30,11 +31,9 @@ const fetchItems = async () => {
   <div class="app-container">
     <header class="header">
       <h2>{{ t('dashboard') }}</h2>
+
+      <GreetingFetcher />
       
-      <!-- 
-        We can globally invalidate the query cache to force 
-        all components using 'getItems' to refetch in the background. 
-      -->
       <button 
         @click="fetchItems" 
         :disabled="isRefreshing" 
