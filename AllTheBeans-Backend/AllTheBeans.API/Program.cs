@@ -92,7 +92,7 @@ var app = builder.Build();
 
 await SeedData.Initialize(app.Services);
 
-// 2. Configure Request Localisation
+// Configure Request Localisation
 var supportedCultures = new[] { "en-GB", "en" };
 
 var localizationOptions = new RequestLocalizationOptions()
