@@ -3,4 +3,7 @@
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Welcome! The application is localised (en-GB).</value>
   </data>
+  <data name="InvalidEmailError" xml:space="preserve">
+    <value>The provided email address is invalid.</value>
+  </data>
 </root>

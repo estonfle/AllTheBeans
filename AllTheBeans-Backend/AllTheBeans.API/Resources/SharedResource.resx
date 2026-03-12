@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- Standard .NET resx headers normally go here (Visual Studio generates them) -->
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Welcome! The application color is localized.</value>
+  </data>
+  <data name="InvalidEmailError" xml:space="preserve">
+    <value>The provided email address is invalid.</value>
   </data>
 </root>

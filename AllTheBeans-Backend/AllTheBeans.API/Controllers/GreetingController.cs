@@ -18,7 +18,7 @@ public class GreetingController : ControllerBase
     public async Task<ActionResult> Get()
     {
         // This will look for a key called "WelcomeMessage" in the .resx file
-        var message = _localizer["WelcomeMessage"].Value;
+        var message = _localizer[SharedResource.WelcomeMessage].Value;
         
         return Ok(new { Message = message });
     }
