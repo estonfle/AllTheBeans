@@ -26,13 +26,6 @@ public class GlobalExceptionHandler : IExceptionHandler
             Detail = "An internal error occurred. Please try again later."
         };
 
-        // if (exception is ArgumentException)
-        // {
-        //      problemDetails.Status = StatusCodes.Status400BadRequest;
-        //      problemDetails.Title = "Bad Request";
-        //      problemDetails.Detail = exception.Message;
-        // }
-
         switch (exception)
         {
             case ArgumentException:

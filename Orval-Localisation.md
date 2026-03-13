@@ -1,8 +1,29 @@
+# Orval and .NET API Integration
+
+Orval uses the OpenAPI `operationId` to name its functions. If the .NET API doesn't provide one, Orval defaults to combining the HTTP verb and the route.
+
+We can easily tell Swashbuckle to generate clean `operationIds` right inside the .NET controller by using the `Name` property on the HTTP attributes:
+
+```csharp
+[HttpGet(Name = "getAllBeans")]
+```
+
 **Routes conventional REST format (**`GetAllItems` → `/get-all-items`)**
 
-`It's a good practice to use `new RouteTokenTransformerConvention to convert routes to conventional REST format. Otherwise we end up with long difficult to read endpoints.
+It's a good practice to use new `RouteTokenTransformerConvention` to convert routes to conventional REST format. Otherwise we end up with long difficult to read endpoints.
 
-### Clean up the requestBody and the responses in Swagger
+Add this line to force all query parameters to be camelCase
+
+```csharp
+DescribeAllParametersInCamelCase()
+```
+
+OpenAPI (Swagger) specification does not support generic types.
+When the .NET API generates the swagger.json file, Swashbuckle flattens PageResultDto<Entity> into a specific, concrete object and names it EntityPageResultDto. Orval is simply reading exactly what Swagger gives it.
+
+### Clean up the requestBody and the responses in Swagger for MSW generation
+
+**MSW handlers** mock network requests at the **network layer**, intercepting actual HTTP calls made by your application (e.g., `fetch`, `axios`) during tests or development. This allows you to simulate various API responses—success, errors, delays—without relying on a real backend. It's ideal for testing how your app behaves under different network conditions and ensures consistency across development and testing environments.
 
 By default, when Swashbuckle (.NET's Swagger generator) creates the swagger.json, it declares that the endpoints can return data in three different formats: text/plain, application/json, and text/json.
 
@@ -16,8 +37,6 @@ Cleans up the requestBody in Swagger
 
 `new ConsumesAttribute("application/json")`
 
-**MSW handlers** mock network requests at the **network layer**, intercepting actual HTTP calls made by your application (e.g., `fetch`, `axios`) during tests or development. This allows you to simulate various API responses—success, errors, delays—without relying on a real backend. It's ideal for testing how your app behaves under different network conditions and ensures consistency across development and testing environments.
-
 **MSW** for API mocking in integration and end-to-end tests, and `vi.mocked` for unit testing where you want to isolate logic from dependencies.
 
 - **setupServer(...getAuthMock()):** You don't have to manually write http.post(...) interceptors for every endpoint. Orval bundles all the endpoints of the Auth controller into getAuthMock().
@@ -27,25 +46,6 @@ Cleans up the requestBody in Swagger
 - **Network Isolation:** Because MSW intercepts the fetch/XHR requests at the Node network level, your axios-instance.ts will actually fire off an HTTP request, but it will never hit your real .NET API. It's completely isolated.
 
 - **Type Safety:** The entire test is strictly typed. If you try to pass an invalid customResponse into getLoginMockHandler, TypeScript will throw an error because it strictly expects AuthResponseDto.
-
-# Orval and .NET API Integration
-
-Orval uses the OpenAPI `operationId` to name its functions. If the .NET API doesn't provide one, Orval defaults to combining the HTTP verb and the route.
-
-We can easily tell Swashbuckle to generate clean `operationIds` right inside the .NET controller by using the `Name` property on the HTTP attributes:
-
-```csharp
-[HttpGet(Name = "getAllBeans")]
-```
-
-Add this line to force all query parameters to be camelCase
-
-```csharp
-DescribeAllParametersInCamelCase()
-```
-
-OpenAPI (Swagger) specification does not support generic types.
-When the .NET API generates the swagger.json file, Swashbuckle flattens PageResultDto<Entity> into a specific, concrete object and names it EntityPageResultDto. Orval is simply reading exactly what Swagger gives it.
 
 # Replace try / catch in controllers with GlobalExceptionHandler
 
@@ -71,7 +71,7 @@ Use Handler
 app.UseExceptionHandler(); 
 ```
 
-#Fetching Data
+# Fetching Data
 
 **Vue Query**
 
@@ -92,7 +92,7 @@ app.UseExceptionHandler();
 - Use isFetching, isFinish
 
 # Localisation
-- **Advantages of Localisation:** easy to add ground up, improves development experience, autocomplete, reusability, less typos, easy to update titles, etc.
+- **Advantages of Localisation:** easy to add from ground up, improves development experience, autocomplete, reusability, less typos, easy to update titles, etc.
 
 Create .json in locals/en on the frontend, SharedResources.cs and .resx files in the Resources folder on backend.
 
