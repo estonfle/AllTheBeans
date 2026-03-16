@@ -23,7 +23,7 @@ When the .NET API generates the swagger.json file, Swashbuckle flattens PageR
 
 ### Clean up the requestBody and the responses in Swagger for MSW generation
 
-**MSW handlers** mock network requests at the **network layer**, intercepting actual HTTP calls made by your application (e.g., `fetch`, `axios`) during tests or development. This allows you to simulate various API responses—success, errors, delays—without relying on a real backend. It's ideal for testing how your app behaves under different network conditions and ensures consistency across development and testing environments.
+**MSW handlers** mock network requests at the **network layer**, intercepting actual HTTP calls made by the application (e.g., `fetch`, `axios`) during tests or development. This allows us to simulate various API responses—success, errors, delays—without relying on a real backend. It's ideal for testing how the app behaves under different network conditions and ensures consistency across development and testing environments.
 
 By default, when Swashbuckle (.NET's Swagger generator) creates the swagger.json, it declares that the endpoints can return data in three different formats: text/plain, application/json, and text/json.
 
@@ -37,19 +37,19 @@ Cleans up the requestBody in Swagger
 
 `new ConsumesAttribute("application/json")`
 
-**MSW** for API mocking in integration and end-to-end tests, and `vi.mocked` for unit testing where you want to isolate logic from dependencies.
+**MSW** for API mocking in integration and end-to-end tests, and `vi.mocked` for unit testing where we want to isolate logic from dependencies.
 
-- **setupServer(...getAuthMock()):** You don't have to manually write http.post(...) interceptors for every endpoint. Orval bundles all the endpoints of the Auth controller into getAuthMock().
+- **setupServer(...getAuthMock()):** We don't have to manually write http.post(...) interceptors for every endpoint. Orval bundles all the endpoints of the Auth controller into getAuthMock().
 
-- **getLoginMockHandler(customResponse):** This is the real magic of Orval's MSW generator. If you pass an object into this function, Orval safely overrides the faker data and guarantees the test uses exactly what you provided.
+- **getLoginMockHandler(customResponse):** This is the real magic of Orval's MSW generator. If we pass an object into this function, Orval safely overrides the faker data and guarantees the test uses exactly what we provided.
 
-- **Network Isolation:** Because MSW intercepts the fetch/XHR requests at the Node network level, your axios-instance.ts will actually fire off an HTTP request, but it will never hit your real .NET API. It's completely isolated.
+- **Network Isolation:** Because MSW intercepts the fetch/XHR requests at the Node network level, the axios-instance.ts will actually fire off an HTTP request, but it will never hit the real .NET API. It's completely isolated.
 
-- **Type Safety:** The entire test is strictly typed. If you try to pass an invalid customResponse into getLoginMockHandler, TypeScript will throw an error because it strictly expects AuthResponseDto.
+- **Type Safety:** The entire test is strictly typed. If we try to pass an invalid customResponse into getLoginMockHandler, TypeScript will throw an error because it strictly expects AuthResponseDto.
 
 # Replace try / catch in controllers with GlobalExceptionHandler
 
-The IExceptionHandler interface was added to the .NET ecosystem in .NET 8It was introduced as a modern, structured, and modular way to handle exceptions globally within ASP.NET Core applications, providing an alternative to creating custom exception-handling middleware or using try-catch blocks throughout your codebase.
+The IExceptionHandler interface was added to the .NET ecosystem in .NET 8It was introduced as a modern, structured, and modular way to handle exceptions globally within ASP.NET Core applications, providing an alternative to creating custom exception-handling middleware or using try-catch blocks throughout the codebase.
 
 This intercepts any error that happens anywhere in the application, logs it, and returns a clean JSON error response to the frontend.
 
@@ -76,10 +76,10 @@ app.UseExceptionHandler();
 **Vue Query**
 
 - **Caching & Deduplication:** If two components request the same data, it only makes one network call.
-- **Stale Time:** You can tell it, "This data is good for 5 minutes, don't ever refetch it before then."
+- **Stale Time:**We can tell it, "This data is good for 5 minutes, don't ever refetch it before then."
 - **Dependent Queries:** "Don't run Query B until Query A finishes and gives me an ID."
 - **Background Refetching:** Automatically updates stale data in the background (e.g., when the user refocuses the browser window).
-- **Built-in States:** Gives you reactive isLoading, isError, isFetching, and data out of the box.
+- **Built-in States:** Gives us reactive isLoading, isError, isFetching, and data out of the box.
 - **Optimistic Updates:** Allows the UI to update instantly before the server confirms the mutation.
 
 **Axios with (Interceptors)**
